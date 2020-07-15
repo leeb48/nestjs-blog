@@ -8,9 +8,17 @@ const initialState: AuthState = {
   loading: true,
 };
 
-export default function (state = initialState, action: AuthAction) {
+export const auth = (state = initialState, action: AuthAction) => {
   switch (action.type) {
     case AuthActionTypes.register:
+    case AuthActionTypes.login:
+      localStorage.setItem('token', action.payload.accessToken);
+      return {
+        ...state,
+        token: localStorage.getItem('token'),
+      };
+
+    default:
       return state;
   }
-}
+};

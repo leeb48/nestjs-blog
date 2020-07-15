@@ -1,8 +1,8 @@
 // Auth Types
 export enum AuthActionTypes {
-  register,
-  login,
-  logout,
+  register = 'REGISTER USER',
+  login = 'LOGIN USER',
+  logout = 'LOGOUT USER',
 }
 export interface User {
   username: string;

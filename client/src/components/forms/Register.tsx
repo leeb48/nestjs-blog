@@ -103,7 +103,7 @@ const Register = ({ registerUser }: RegisterUserProps) => {
           </div>
         </div>
 
-        <button className="button is-success">Submit</button>
+        <button className="button is-success">Register</button>
       </form>
     </Fragment>
   );
