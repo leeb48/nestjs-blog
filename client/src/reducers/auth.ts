@@ -15,7 +15,19 @@ export const auth = (state = initialState, action: AuthAction) => {
       localStorage.setItem('token', action.payload.accessToken);
       return {
         ...state,
+        isAuthenticated: true,
         token: localStorage.getItem('token'),
+        loading: false,
+      };
+
+    case AuthActionTypes.logout:
+      localStorage.setItem('token', '');
+      return {
+        ...state,
+        isAuthenticated: false,
+        token: null,
+        user: null,
+        loading: false,
       };
 
     default:

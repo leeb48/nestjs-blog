@@ -22,6 +22,10 @@ export class UserRepository extends Repository<User> {
     user.bio = bio;
     user.salt = salt;
 
+    const date = new Date();
+    user.dateRegistered = `${date.getMonth() +
+      1}/${date.getDate()}/${date.getFullYear()}`;
+
     try {
       await user.save();
     } catch (error) {

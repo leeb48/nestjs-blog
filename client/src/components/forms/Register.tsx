@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import { registerUser, CreateUserDto } from '../../actions/auth';
+import './Register.scss';
 
 interface RegisterUserProps {
   registerUser: (registerForm: CreateUserDto) => void;
@@ -33,7 +34,10 @@ const Register = ({ registerUser }: RegisterUserProps) => {
 
   return (
     <Fragment>
-      <form className="container" onSubmit={(e) => onSubmit(e)}>
+      <form
+        className="container register-container"
+        onSubmit={(e) => onSubmit(e)}
+      >
         <div className="field">
           <label className="label">First Name</label>
           <div className="control">

@@ -1,6 +1,14 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { logoutUser } from '../../actions/auth';
 
-const Navbar = () => {
+interface NavbarProps {
+  logoutUser: () => void;
+}
+
+const Navbar = ({ logoutUser }: NavbarProps) => {
   return (
     <Fragment>
       <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -20,15 +28,21 @@ const Navbar = () => {
 
         <div id="navbarBasicExample" className="navbar-menu">
           <div className="navbar-start">
-            <a className="navbar-item">Home</a>
+            <Link to="/" className="navbar-item">
+              Home
+            </Link>
 
-            <a className="navbar-item">Documentation</a>
+            <Link to="/myprofile" className="navbar-item">
+              My Profile
+            </Link>
 
             <div className="navbar-item has-dropdown is-hoverable">
               <a className="navbar-link">More</a>
 
               <div className="navbar-dropdown">
-                <a className="navbar-item">About</a>
+                <Link to="/about" className="navbar-item">
+                  About
+                </Link>
                 <a className="navbar-item">Jobs</a>
                 <a className="navbar-item">Contact</a>
                 <hr className="navbar-divider" />
@@ -40,10 +54,15 @@ const Navbar = () => {
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                <a className="button is-primary">
+                <Link to="/register" className="button is-primary">
                   <strong>Sign up</strong>
+                </Link>
+                <Link to="/login" className="button is-light">
+                  Log in
+                </Link>
+                <a onClick={logoutUser} className="button is-danger">
+                  Log Out
                 </a>
-                <a className="button is-light">Log in</a>
               </div>
             </div>
           </div>
@@ -53,4 +72,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default connect(null, { logoutUser })(Navbar);

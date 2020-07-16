@@ -6,6 +6,7 @@ import './App.scss';
 import Register from './components/forms/Register';
 import Login from './components/forms/Login';
 import Navbar from './components/layout/Navbar';
+import Profile from './components/profile/Profile';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Switch>
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/myprofile" component={Profile} />
         </Switch>
       </Router>
     </Provider>

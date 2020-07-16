@@ -1,21 +1,39 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { SendUserInfoDto } from './dto/send-user-info.dto';
+import { InjectRepository } from '@nestjs/typeorm';
 require('dotenv').config();
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   // Decodes the JWT and calls validate function with the decoded JSON
-  constructor(private userRepo: UserRepository) {
+  constructor(
+    @InjectRepository(UserRepository) private userRepo: UserRepository,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: process.env.JWT_SECRET,
     });
   }
-  // TODO: Think about how to send user info once JWT has been validated
-  async validate(payload: JwtPayload) {
+
+  async validate(payload: JwtPayload): Promise<SendUserInfoDto> {
     const { username } = payload;
+
+    const user = await this.userRepo.findOne({ username });
+
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+    const userInfo: SendUserInfoDto = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
+      bio: user.bio,
+    };
+
+    return userInfo;
   }
 }
