@@ -1,5 +1,23 @@
-import { AuthActionTypes, AuthState } from '../actions/types';
+import { AuthActionTypes } from '../actions/types';
 import { AuthAction } from '../actions';
+import { setAuthToken } from '../utils/axiosConfig';
+
+//---------------------------------------------------------------------
+// REDUCER STATE
+export interface User {
+  username: string;
+  firstName: string;
+  lastName: string;
+  bio: string;
+  dateRegistered: string;
+}
+
+export interface AuthState {
+  isAuthenticated: boolean;
+  token: string | null;
+  user: User | null;
+  loading: boolean;
+}
 
 const initialState: AuthState = {
   isAuthenticated: false,
@@ -8,11 +26,16 @@ const initialState: AuthState = {
   loading: true,
 };
 
+//---------------------------------------------------------------------
+// REDUCER
 export const auth = (state = initialState, action: AuthAction) => {
   switch (action.type) {
     case AuthActionTypes.register:
     case AuthActionTypes.login:
       localStorage.setItem('token', action.payload.accessToken);
+
+      // Set global authorization token for axios
+      setAuthToken(localStorage.token);
       return {
         ...state,
         isAuthenticated: true,
@@ -20,8 +43,19 @@ export const auth = (state = initialState, action: AuthAction) => {
         loading: false,
       };
 
+    case AuthActionTypes.getUser:
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: action.payload,
+        loading: false,
+      };
+
     case AuthActionTypes.logout:
       localStorage.setItem('token', '');
+
+      // Set global authorization token for axios
+      setAuthToken(localStorage.token);
       return {
         ...state,
         isAuthenticated: false,

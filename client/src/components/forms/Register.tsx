@@ -1,13 +1,20 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { registerUser, CreateUserDto } from '../../actions/auth';
 import './Register.scss';
+import { useHistory } from 'react-router-dom';
+import { AppState } from '../../store';
+import { AuthState } from '../../reducers/auth';
 
 interface RegisterUserProps {
+  auth: AuthState;
   registerUser: (registerForm: CreateUserDto) => void;
 }
 
-const Register = ({ registerUser }: RegisterUserProps) => {
+const Register = ({
+  registerUser,
+  auth: { isAuthenticated },
+}: RegisterUserProps) => {
   const [formData, setFormData] = useState<CreateUserDto>({
     firstName: '',
     lastName: '',
@@ -17,6 +24,12 @@ const Register = ({ registerUser }: RegisterUserProps) => {
   });
 
   const { firstName, lastName, username, password, bio } = formData;
+  let history = useHistory();
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push('/');
+    }
+  }, [history, isAuthenticated]);
 
   const onChange = (
     e: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLTextAreaElement>
@@ -113,4 +126,8 @@ const Register = ({ registerUser }: RegisterUserProps) => {
   );
 };
 
-export default connect(null, { registerUser })(Register);
+const mapStateToProps = (state: AppState) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, { registerUser })(Register);

@@ -3,12 +3,61 @@ import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logoutUser } from '../../actions/auth';
+import { AppState } from '../../store';
+import { AuthState } from '../../reducers/auth';
 
 interface NavbarProps {
+  auth: AuthState;
   logoutUser: () => void;
 }
 
-const Navbar = ({ logoutUser }: NavbarProps) => {
+const Navbar = ({ auth: { isAuthenticated }, logoutUser }: NavbarProps) => {
+  // Navbar Button & Menu configuration
+  const loggedInButtons = (
+    <Fragment>
+      <a onClick={logoutUser} className="button is-danger">
+        Log Out
+      </a>
+    </Fragment>
+  );
+
+  const guestButtons = (
+    <Fragment>
+      <Link to="/login" className="button is-light">
+        Log in
+      </Link>
+      <Link to="/register" className="button is-primary">
+        <strong>Sign up</strong>
+      </Link>
+    </Fragment>
+  );
+
+  const loggedInMenu = (
+    <Fragment>
+      <Link to="/myprofile" className="navbar-item">
+        My Profile
+      </Link>
+    </Fragment>
+  );
+
+  const dropdownMenu = (
+    <Fragment>
+      <div className="navbar-item has-dropdown is-hoverable">
+        <a className="navbar-link">More</a>
+
+        <div className="navbar-dropdown">
+          <Link to="/about" className="navbar-item">
+            About
+          </Link>
+          <a className="navbar-item">Jobs</a>
+          <a className="navbar-item">Contact</a>
+          <hr className="navbar-divider" />
+          <a className="navbar-item">Report an issue</a>
+        </div>
+      </div>
+    </Fragment>
+  );
+
   return (
     <Fragment>
       <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -32,37 +81,15 @@ const Navbar = ({ logoutUser }: NavbarProps) => {
               Home
             </Link>
 
-            <Link to="/myprofile" className="navbar-item">
-              My Profile
-            </Link>
+            {isAuthenticated && loggedInMenu}
 
-            <div className="navbar-item has-dropdown is-hoverable">
-              <a className="navbar-link">More</a>
-
-              <div className="navbar-dropdown">
-                <Link to="/about" className="navbar-item">
-                  About
-                </Link>
-                <a className="navbar-item">Jobs</a>
-                <a className="navbar-item">Contact</a>
-                <hr className="navbar-divider" />
-                <a className="navbar-item">Report an issue</a>
-              </div>
-            </div>
+            {dropdownMenu}
           </div>
 
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                <Link to="/register" className="button is-primary">
-                  <strong>Sign up</strong>
-                </Link>
-                <Link to="/login" className="button is-light">
-                  Log in
-                </Link>
-                <a onClick={logoutUser} className="button is-danger">
-                  Log Out
-                </a>
+                {isAuthenticated ? loggedInButtons : guestButtons}
               </div>
             </div>
           </div>
@@ -72,4 +99,8 @@ const Navbar = ({ logoutUser }: NavbarProps) => {
   );
 };
 
-export default connect(null, { logoutUser })(Navbar);
+const mapStateToProps = (state: AppState) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, { logoutUser })(Navbar);

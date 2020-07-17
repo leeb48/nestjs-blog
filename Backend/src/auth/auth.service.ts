@@ -6,6 +6,7 @@ import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { AccessToken } from './interfaces/accessToken.interface';
+import { SendUserInfoDto } from './dto/send-user-info.dto';
 
 @Injectable()
 export class AuthService {

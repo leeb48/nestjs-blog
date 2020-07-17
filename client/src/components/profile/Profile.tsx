@@ -1,44 +1,37 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { getUser } from '../../actions/auth';
 import './Profile.scss';
+import { AppState } from '../../store';
+import { User } from '../../reducers/auth';
+import UserStats from './UserStats';
+import UserInfo from './UserInfo';
 
-const Profile = () => {
-  return (
+interface ProfileProps {
+  user: User | null;
+  getUser: () => void;
+}
+
+const Profile = ({ user, getUser }: ProfileProps) => {
+  useEffect(() => {
+    getUser();
+  }, [getUser]);
+
+  return !user ? null : (
     <Fragment>
       <div className="container profile-container">
-        <div className="columns">
+        <div className="columns is-centered">
           <div className="column is-9">
             <section className="hero is-info welcome is-small user-hero">
               <div className="hero-body">
                 <div className="container">
-                  <h1 className="title">Hello User</h1>
+                  <h1 className="title">Hello {user.username}</h1>
                 </div>
               </div>
             </section>
 
-            {/* TODO: UserStats Component */}
-            <section className="info-tiles">
-              <div className="tile is-ancestor has-text-centered">
-                <div className="tile is-parent">
-                  <article className="tile is-child box">
-                    <p className="title">10</p>
-                    <p className="subtitle"># of posts</p>
-                  </article>
-                </div>
-                <div className="tile is-parent">
-                  <article className="tile is-child box">
-                    <p className="title">42</p>
-                    <p className="subtitle"># of liked posts</p>
-                  </article>
-                </div>
-                <div className="tile is-parent">
-                  <article className="tile is-child box">
-                    <p className="title">07/16/2020</p>
-                    <p className="subtitle">Member since</p>
-                  </article>
-                </div>
-              </div>
-            </section>
+            <UserStats dateRegistered={user.dateRegistered} />
 
             {/* TODO: RecentPost Component */}
             <div className="columns">
@@ -123,24 +116,11 @@ const Profile = () => {
                   </footer>
                 </div>
               </div>
-
-              {/* UserInfo Component */}
-              <div className="column is-6">
-                <div className="card">
-                  <div className="card-content">
-                    <div className="media-content">
-                      <p className="title is-5">Mango Lee</p>
-                      <a className="subtitle is-6 has-text-info">Edit Bio</a>
-                    </div>
-
-                    <div className="content">
-                      Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                      Dolor nostrum quae placeat aliquid nihil esse eum
-                      accusamus magnam commodi tenetur.
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <UserInfo
+                firstName={user.firstName}
+                lastName={user.lastName}
+                bio={user.bio}
+              />
             </div>
           </div>
         </div>
@@ -149,4 +129,8 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+const mapStateToProps = (state: AppState) => ({
+  user: state.auth.user,
+});
+
+export default connect(mapStateToProps, { getUser })(Profile);

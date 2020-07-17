@@ -5,12 +5,22 @@ import { Dispatch } from 'react';
 //---------------------------------------------------------------------
 // INTERFACE
 
+// Data Transfer Objects
 export interface CreateUserDto {
   firstName: string;
   lastName: string;
   username: string;
   password: string;
   bio: string;
+}
+
+export interface GetUserDto {
+  firstName: string;
+  lastName: string;
+  username: string;
+  password: string;
+  bio: string;
+  dateRegistered: string;
 }
 
 export interface LoginUserDto {
@@ -35,6 +45,11 @@ export interface LoginUserAction {
 
 export interface LogoutUserAction {
   type: AuthActionTypes.logout;
+}
+
+export interface GetUserAction {
+  type: AuthActionTypes.getUser;
+  payload: GetUserDto;
 }
 
 //---------------------------------------------------------------------
@@ -78,6 +93,7 @@ export const loginUser = (userData: LoginUserDto) => async (
       payload: res.data,
     });
   } catch (error) {
+    console.log(error.message);
     console.log(error.response.data);
   }
 };
@@ -86,7 +102,21 @@ export const logoutUser = () => ({
   type: AuthActionTypes.logout,
 });
 
+export const getUser = () => async (dispatch: Dispatch<GetUserAction>) => {
+  try {
+    const res = await axios.get('/auth');
+
+    dispatch({
+      type: AuthActionTypes.getUser,
+      payload: res.data,
+    });
+  } catch (error) {
+    console.log(error.response.data);
+  }
+};
+
 export type AuthAction =
   | RegisterUserAction
   | LoginUserAction
-  | LogoutUserAction;
+  | LogoutUserAction
+  | GetUserAction;

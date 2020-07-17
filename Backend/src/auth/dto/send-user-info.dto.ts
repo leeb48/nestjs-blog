@@ -6,4 +6,6 @@ export class SendUserInfoDto {
   username: string;
 
   bio: string;
+
+  dateRegistered: string;
 }

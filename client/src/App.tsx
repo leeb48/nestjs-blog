@@ -1,12 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { store } from './store';
+
+// REDUX
+import { configureStore } from './store';
 import { Provider } from 'react-redux';
 import './App.scss';
+
+// COMPONENTS
 import Register from './components/forms/Register';
 import Login from './components/forms/Login';
 import Navbar from './components/layout/Navbar';
 import Profile from './components/profile/Profile';
+
+const store = configureStore();
 
 function App() {
   return (

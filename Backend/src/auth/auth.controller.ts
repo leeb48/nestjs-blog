@@ -33,9 +33,11 @@ export class AuthController {
     return await this.authService.loginUser(authCredentialDto);
   }
 
+  // Authenticate user from request token and send back
+  // user profile information
   @Get()
   @UseGuards(AuthGuard())
-  test(@GetUser() user: SendUserInfoDto): void {
-    console.log(user);
+  getUserInfo(@GetUser() user: SendUserInfoDto): SendUserInfoDto {
+    return user;
   }
 }
