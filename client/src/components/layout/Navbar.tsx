@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { logoutUser } from '../../actions/auth';
 import { AppState } from '../../store';
 import { AuthState } from '../../reducers/auth';
@@ -12,10 +12,17 @@ interface NavbarProps {
 }
 
 const Navbar = ({ auth: { isAuthenticated }, logoutUser }: NavbarProps) => {
+  let history = useHistory();
+
+  const handleLogout = () => {
+    logoutUser();
+    history.push('/');
+  };
+
   // Navbar Button & Menu configuration
   const loggedInButtons = (
     <Fragment>
-      <a onClick={logoutUser} className="button is-danger">
+      <a onClick={handleLogout} className="button is-danger">
         Log Out
       </a>
     </Fragment>

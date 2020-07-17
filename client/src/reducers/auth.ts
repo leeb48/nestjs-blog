@@ -3,7 +3,7 @@ import { AuthAction } from '../actions';
 import { setAuthToken } from '../utils/axiosConfig';
 
 //---------------------------------------------------------------------
-// REDUCER STATE
+// AUTH STATE
 export interface User {
   username: string;
   firstName: string;
@@ -28,7 +28,7 @@ const initialState: AuthState = {
 
 //---------------------------------------------------------------------
 // REDUCER
-export const auth = (state = initialState, action: AuthAction) => {
+export const auth = (state: AuthState = initialState, action: AuthAction) => {
   switch (action.type) {
     case AuthActionTypes.register:
     case AuthActionTypes.login:

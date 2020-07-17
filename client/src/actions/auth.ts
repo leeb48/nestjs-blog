@@ -1,9 +1,11 @@
 import axios from 'axios';
 import { AuthActionTypes } from './types';
 import { Dispatch } from 'react';
+import { setAlert, AlertAction } from './alert';
+import { SetAlertDto } from '../actions/alert';
 
 //---------------------------------------------------------------------
-// INTERFACE
+// INTERFACES
 
 // Data Transfer Objects
 export interface CreateUserDto {
@@ -77,7 +79,7 @@ export const registerUser = (userData: CreateUserDto) => async (
 };
 
 export const loginUser = (userData: LoginUserDto) => async (
-  dispatch: Dispatch<LoginUserAction>
+  dispatch: Dispatch<LoginUserAction | AlertAction>
 ) => {
   try {
     const config = {
@@ -92,9 +94,18 @@ export const loginUser = (userData: LoginUserDto) => async (
       type: AuthActionTypes.login,
       payload: res.data,
     });
+
+    dispatch(setAlert({ msg: 'Login Successful', type: 'success' }));
   } catch (error) {
     console.log(error.message);
-    console.log(error.response.data);
+
+    const errors: string[] = error.response.data.message;
+
+    if (errors) {
+      errors.forEach((error) =>
+        dispatch(setAlert({ msg: error, type: 'warning' }))
+      );
+    }
   }
 };
 

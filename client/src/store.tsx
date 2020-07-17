@@ -3,8 +3,10 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers';
 import { AuthState } from './reducers/auth';
+import { Alert } from './reducers/alert';
 
 export interface AppState {
+  alert: Alert[];
   auth: AuthState;
 }
 

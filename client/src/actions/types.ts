@@ -5,3 +5,8 @@ export enum AuthActionTypes {
   logout = 'LOGOUT USER',
   getUser = 'GET USER',
 }
+
+export enum AlertActionTypes {
+  setAlert = 'SET ALERT',
+  removeAlert = 'REMOVE_ALERT',
+}
