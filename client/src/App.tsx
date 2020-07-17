@@ -11,6 +11,7 @@ import Register from './components/forms/Register';
 import Login from './components/forms/Login';
 import Navbar from './components/layout/Navbar';
 import Profile from './components/profile/Profile';
+import Alerts from './components/alert/Alerts';
 
 const store = configureStore();
 
@@ -19,6 +20,7 @@ function App() {
     <Provider store={store}>
       <Router>
         <Navbar />
+        <Alerts />
         <Switch>
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />

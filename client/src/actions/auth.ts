@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { AuthActionTypes } from './types';
 import { Dispatch } from 'react';
-import { setAlert, AlertAction } from './alert';
-import { SetAlertDto } from '../actions/alert';
+import { setAlert } from './alert';
 
 //---------------------------------------------------------------------
 // INTERFACES
@@ -58,7 +57,7 @@ export interface GetUserAction {
 // ACTION CREATORS
 
 export const registerUser = (userData: CreateUserDto) => async (
-  dispatch: Dispatch<RegisterUserAction | AlertAction>
+  dispatch: Dispatch<any>
 ) => {
   try {
     const config = {
@@ -79,14 +78,14 @@ export const registerUser = (userData: CreateUserDto) => async (
 
     if (errors) {
       errors.forEach((error) =>
-        dispatch(setAlert({ msg: error, type: 'warning' }))
+        dispatch(setAlert({ msg: error, type: 'danger' }))
       );
     }
   }
 };
 
 export const loginUser = (userData: LoginUserDto) => async (
-  dispatch: Dispatch<LoginUserAction | AlertAction>
+  dispatch: Dispatch<any>
 ) => {
   try {
     const config = {
@@ -110,7 +109,7 @@ export const loginUser = (userData: LoginUserDto) => async (
 
     if (errors) {
       errors.forEach((error) =>
-        dispatch(setAlert({ msg: error, type: 'warning' }))
+        dispatch(setAlert({ msg: error, type: 'danger' }))
       );
     }
   }

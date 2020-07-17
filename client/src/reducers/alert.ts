@@ -19,6 +19,10 @@ export const alert = (state: Alert[] = initalState, action: AlertAction) => {
   switch (action.type) {
     case AlertActionTypes.setAlert:
       return [...state, action.payload];
+
+    case AlertActionTypes.removeAlert:
+      return state.filter((alert) => alert.id !== action.payload);
+
     default:
       return state;
   }

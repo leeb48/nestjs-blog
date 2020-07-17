@@ -4,6 +4,7 @@
 import { AlertActionTypes } from './types';
 import { AlertType, Alert } from '../reducers/alert';
 import { v4 } from 'uuid';
+import { Dispatch } from 'react';
 
 export interface SetAlertDto {
   msg: string;
@@ -15,10 +16,17 @@ interface SetAlertAction {
   payload: Alert;
 }
 
+interface RemoveAlertAction {
+  type: AlertActionTypes.removeAlert;
+  payload: string;
+}
+
 //---------------------------------------------------------------------
 // ACTION CREATORS
 
-export const setAlert = (alert: SetAlertDto): SetAlertAction => {
+export const setAlert = (alert: SetAlertDto, timer: number = 5000) => (
+  dispatch: Dispatch<any>
+) => {
   const { msg, type } = alert;
   const newAlert: Alert = {
     msg,
@@ -26,10 +34,19 @@ export const setAlert = (alert: SetAlertDto): SetAlertAction => {
     id: v4(),
   };
 
-  return {
+  dispatch({
     type: AlertActionTypes.setAlert,
     payload: newAlert,
-  };
+  });
+
+  setTimeout(() => {
+    dispatch(removeAlert(newAlert.id));
+  }, timer);
 };
 
-export type AlertAction = SetAlertAction;
+const removeAlert = (id: string) => ({
+  type: AlertActionTypes.removeAlert,
+  payload: id,
+});
+
+export type AlertAction = SetAlertAction | RemoveAlertAction;
