@@ -8,6 +8,7 @@ export type AlertType = 'danger' | 'warning' | 'success';
 export interface Alert {
   msg: string;
   type: AlertType;
+  id: string;
 }
 
 const initalState: Alert[] = [];

@@ -58,7 +58,7 @@ export interface GetUserAction {
 // ACTION CREATORS
 
 export const registerUser = (userData: CreateUserDto) => async (
-  dispatch: Dispatch<RegisterUserAction>
+  dispatch: Dispatch<RegisterUserAction | AlertAction>
 ) => {
   try {
     const config = {
@@ -73,8 +73,15 @@ export const registerUser = (userData: CreateUserDto) => async (
       payload: res.data,
     });
   } catch (error) {
-    console.log(error.response.data);
     console.log(error.message);
+
+    const errors: string[] = error.response.data.message;
+
+    if (errors) {
+      errors.forEach((error) =>
+        dispatch(setAlert({ msg: error, type: 'warning' }))
+      );
+    }
   }
 };
 
@@ -125,6 +132,9 @@ export const getUser = () => async (dispatch: Dispatch<GetUserAction>) => {
     console.log(error.response.data);
   }
 };
+
+//---------------------------------------------------------------------
+// Utility Functions
 
 export type AuthAction =
   | RegisterUserAction
