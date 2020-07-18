@@ -2,7 +2,7 @@ import { Repository, EntityRepository } from 'typeorm';
 import { BlogPost } from './blog-post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { InternalServerErrorException } from '@nestjs/common';
-import { User } from 'src/auth/user.entity';
+import { User } from '../auth/user.entity';
 import { GetPostFilter } from './dto/get-post-filter.dto';
 
 @EntityRepository(BlogPost)
@@ -51,7 +51,7 @@ export class PostRepository extends Repository<BlogPost> {
   async getUsersPosts(user: User): Promise<BlogPost[]> {
     const query = this.createQueryBuilder('blog_post');
 
-    query.where('blog_post.userId = :userId', { userId: user.id });
+    query.where('(blog_post."userId" = :userId)', { userId: user.id });
 
     const posts = await query.getMany();
 

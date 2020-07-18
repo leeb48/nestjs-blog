@@ -12,6 +12,9 @@ import Login from './components/forms/Login';
 import Navbar from './components/layout/Navbar';
 import Profile from './components/profile/Profile';
 import Alerts from './components/alert/Alerts';
+import Posts from './components/posts/Posts';
+import NewPostForm from './components/forms/NewPostForm';
+import Post from './components/post/Post';
 
 const store = configureStore();
 
@@ -25,6 +28,9 @@ function App() {
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/myprofile" component={Profile} />
+          <Route exact path="/posts" component={Posts} />
+          <Route exact path="/post" component={Post} />
+          <Route exact path="/newpost" component={NewPostForm} />
         </Switch>
       </Router>
     </Provider>

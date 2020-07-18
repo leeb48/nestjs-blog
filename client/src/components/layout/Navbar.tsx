@@ -88,6 +88,10 @@ const Navbar = ({ auth: { isAuthenticated }, logoutUser }: NavbarProps) => {
               Home
             </Link>
 
+            <Link to="/posts" className="navbar-item">
+              Posts
+            </Link>
+
             {isAuthenticated && loggedInMenu}
 
             {dropdownMenu}
