@@ -7,5 +7,7 @@ export class SendUserInfoDto {
 
   bio: string;
 
+  id: number;
+
   dateRegistered: string;
 }

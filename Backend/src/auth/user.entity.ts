@@ -4,8 +4,11 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Unique,
+  OneToMany,
+  ManyToMany,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import { BlogPost } from '../post/blog-post.entity';
 
 @Entity()
 @Unique(['username'])
@@ -30,6 +33,19 @@ export class User extends BaseEntity {
 
   @Column()
   bio: string;
+
+  @OneToMany(
+    type => BlogPost,
+    post => post.user,
+    { eager: true },
+  )
+  blogPosts: BlogPost[];
+
+  @ManyToMany(
+    type => BlogPost,
+    blogPost => blogPost.likedUsers,
+  )
+  likedPosts: BlogPost[];
 
   @Column()
   dateRegistered: string;

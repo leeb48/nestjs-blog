@@ -27,14 +27,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new UnauthorizedException();
     }
-    const userInfo: SendUserInfoDto = {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      username: user.username,
-      bio: user.bio,
-      dateRegistered: user.dateRegistered,
-    };
 
-    return userInfo;
+    return user;
   }
 }

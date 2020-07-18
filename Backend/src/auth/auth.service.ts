@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -6,7 +10,6 @@ import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { AccessToken } from './interfaces/accessToken.interface';
-import { SendUserInfoDto } from './dto/send-user-info.dto';
 
 @Injectable()
 export class AuthService {
@@ -29,7 +32,7 @@ export class AuthService {
     const username = await this.userRepo.loginUser(authCredentialDto);
 
     if (!username) {
-      throw new UnauthorizedException();
+      throw new InternalServerErrorException(['Unauthorized']);
     }
 
     const payload: JwtPayload = { username };
