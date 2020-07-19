@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
 import { UserRepository } from './user.repository';
 import { AuthController } from './auth.controller';
+import { JwtAuthGuard } from './guards/JwtAuthGuard.guard';
 require('dotenv').config();
 
 @Module({
@@ -19,8 +20,8 @@ require('dotenv').config();
       },
     }),
   ],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, JwtAuthGuard],
   controllers: [AuthController],
-  exports: [AuthService, JwtStrategy],
+  exports: [AuthService, JwtStrategy, JwtAuthGuard],
 })
 export class AuthModule {}

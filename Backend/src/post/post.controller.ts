@@ -16,6 +16,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/decorators/get-user.decorator';
 import { User } from 'src/auth/user.entity';
 import { GetPostFilter } from './dto/get-post-filter.dto';
+import { JwtAuthGuard } from 'src/auth/guards/JwtAuthGuard.guard';
 
 @Controller('blogpost')
 export class PostController {
@@ -23,7 +24,7 @@ export class PostController {
 
   // @INFO: Create a post after user authentication
   @Post()
-  @UseGuards(AuthGuard())
+  @UseGuards(JwtAuthGuard)
   async createPost(
     @GetUser() user: User,
     @Body(ValidationPipe) createPostDto: CreatePostDto,

@@ -6,7 +6,16 @@ export enum AuthActionTypes {
   getUser = 'GET USER',
 }
 
+// Alert Types
 export enum AlertActionTypes {
   setAlert = 'SET ALERT',
   removeAlert = 'REMOVE_ALERT',
+}
+
+// BlogPost Types
+export enum BlogPostActionTypes {
+  createPost = 'CREATE_POST',
+  getPostWithQuery = 'GET_POST_WITH_QUERY',
+  getCurrUserPost = 'GET_CURR_USER_POST',
+  removePost = 'REMOVE_POST',
 }

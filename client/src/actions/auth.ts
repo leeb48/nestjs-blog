@@ -106,7 +106,6 @@ export const loginUser = (userData: LoginUserDto) => async (
     console.log(error.message);
 
     const errors: string[] = error.response.data.message;
-    console.log(errors);
 
     if (errors) {
       errors.forEach((error) =>

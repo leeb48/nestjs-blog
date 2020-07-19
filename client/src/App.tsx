@@ -30,6 +30,8 @@ function App() {
           <Route exact path="/myprofile" component={Profile} />
           <Route exact path="/posts" component={Posts} />
           <Route exact path="/post" component={Post} />
+
+          {/* TODO: Make it into a private route */}
           <Route exact path="/newpost" component={NewPostForm} />
         </Switch>
       </Router>

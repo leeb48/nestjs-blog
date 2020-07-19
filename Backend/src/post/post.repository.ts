@@ -4,7 +4,6 @@ import { CreatePostDto } from './dto/create-post.dto';
 import {
   InternalServerErrorException,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { User } from '../auth/user.entity';
 import { GetPostFilter } from './dto/get-post-filter.dto';

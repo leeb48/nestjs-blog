@@ -5,15 +5,14 @@ import {
   ValidationPipe,
   Get,
   UseGuards,
-  Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
-import { AuthGuard } from '@nestjs/passport';
 import { AccessToken } from './interfaces/accessToken.interface';
 import { GetUser } from 'src/decorators/get-user.decorator';
 import { SendUserInfoDto } from './dto/send-user-info.dto';
+import { JwtAuthGuard } from './guards/JwtAuthGuard.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -36,7 +35,7 @@ export class AuthController {
   // Authenticate user from request token and send back
   // user profile information
   @Get()
-  @UseGuards(AuthGuard())
+  @UseGuards(JwtAuthGuard)
   getUserInfo(@GetUser() user: SendUserInfoDto): SendUserInfoDto {
     return user;
   }

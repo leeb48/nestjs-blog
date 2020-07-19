@@ -1,7 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { createPost, CreatePostDto } from '../../actions/blogPost';
 import './NewPostForm.scss';
+import { RouteComponentProps } from 'react-router-dom';
 
-const NewPostForm = () => {
+interface NewPostFormProps extends RouteComponentProps {
+  createPost: (newPostData: CreatePostDto, history: any) => void;
+}
+
+const NewPostForm = ({ createPost, history }: NewPostFormProps) => {
+  const [formData, setFormData] = useState<CreatePostDto>({
+    title: '',
+    content: '',
+  });
+
+  const { title, content } = formData;
+
+  const onChange = (
+    e: React.FormEvent<HTMLInputElement> | React.FormEvent<HTMLTextAreaElement>
+  ) =>
+    setFormData({ ...formData, [e.currentTarget.name]: e.currentTarget.value });
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    createPost(formData, history);
+  };
+
   return (
     <div className="container">
       <section className="blog-form">
@@ -14,12 +39,28 @@ const NewPostForm = () => {
                 </div>
               </div>
               <div className="content-article-body">
-                <form>
+                <form onSubmit={(e) => onSubmit(e)}>
+                  <div className="field">
+                    <div className="control">
+                      <input
+                        className="input is-primary"
+                        type="text"
+                        name="title"
+                        value={title}
+                        onChange={(e) => onChange(e)}
+                        placeholder="Title"
+                      />
+                    </div>
+                  </div>
+
                   <div className="field">
                     <div className="control">
                       <textarea
                         className="textarea is-primary"
-                        placeholder="Primary textarea"
+                        name="content"
+                        value={content}
+                        onChange={(e) => onChange(e)}
+                        placeholder="Your post goes here"
                       ></textarea>
                     </div>
                   </div>
@@ -36,4 +77,4 @@ const NewPostForm = () => {
   );
 };
 
-export default NewPostForm;
+export default connect(null, { createPost })(NewPostForm);
