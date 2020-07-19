@@ -6,6 +6,8 @@ import {
   UseGuards,
   ValidationPipe,
   Query,
+  Delete,
+  Param,
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostService } from './post.service';
@@ -19,6 +21,7 @@ import { GetPostFilter } from './dto/get-post-filter.dto';
 export class PostController {
   constructor(private postService: PostService) {}
 
+  // @INFO: Create a post after user authentication
   @Post()
   @UseGuards(AuthGuard())
   async createPost(
@@ -28,6 +31,7 @@ export class PostController {
     await this.postService.createPost(createPostDto, user);
   }
 
+  // @INFO: Get posts based on query options
   @Get()
   async getPosts(
     @Query(ValidationPipe) getPostFilter: GetPostFilter,
@@ -35,9 +39,23 @@ export class PostController {
     return await this.postService.getPosts(getPostFilter);
   }
 
+  // @INFO: Get all post made by the current authenticated user
   @Get('/curr-user-posts')
   @UseGuards(AuthGuard())
   async getUsersPosts(@GetUser() user: User): Promise<BlogPost[]> {
     return await this.postService.getUsersPosts(user);
   }
+
+  // @INFO: Remove a post made by a user
+  @Delete('/:id')
+  @UseGuards(AuthGuard())
+  async removePost(
+    @Param('id') postId: number,
+    @GetUser() user: User,
+  ): Promise<void> {
+    await this.postService.removePost(postId, user);
+  }
+
+  // TODO: Work on comments feature
+  // TODO: Work on likes feature
 }

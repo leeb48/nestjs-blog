@@ -23,4 +23,8 @@ export class PostService {
   async getUsersPosts(user: User): Promise<BlogPost[]> {
     return await this.postRepo.getUsersPosts(user);
   }
+
+  async removePost(postId: number, user: User): Promise<void> {
+    await this.postRepo.removePost(postId, user);
+  }
 }

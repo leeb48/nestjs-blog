@@ -1,7 +1,11 @@
 import { Repository, EntityRepository } from 'typeorm';
 import { BlogPost } from './blog-post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
-import { InternalServerErrorException } from '@nestjs/common';
+import {
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { User } from '../auth/user.entity';
 import { GetPostFilter } from './dto/get-post-filter.dto';
 
@@ -26,9 +30,10 @@ export class PostRepository extends Repository<BlogPost> {
       throw new InternalServerErrorException([error.message]);
     }
   }
+
   // TODO: Create fontend endpoint to use search feature
   async getPosts(getPostFilter: GetPostFilter): Promise<BlogPost[]> {
-    const { search } = getPostFilter;
+    const { search, postId } = getPostFilter;
 
     const query = this.createQueryBuilder('blog_post');
 
@@ -37,6 +42,10 @@ export class PostRepository extends Repository<BlogPost> {
         '(blog_post.title LIKE :search OR blog_post.content LIKE :search)',
         { search: `%${search}%` },
       );
+    }
+
+    if (postId) {
+      query.andWhere('blog_post.id = :postId', { postId });
     }
 
     try {
@@ -56,5 +65,25 @@ export class PostRepository extends Repository<BlogPost> {
     const posts = await query.getMany();
 
     return posts;
+  }
+
+  async removePost(postId: number, user: User): Promise<void> {
+    // Security check to make sure the owner of the post is making the removal request
+    const query = this.createQueryBuilder('blog_post');
+
+    // Make a query with the postId and the userId and see if a match exists
+    query.where('(blog_post.id = :postId AND blog_post."userId" = :userId)', {
+      postId,
+      userId: user.id,
+    });
+
+    const queryRes = await query.getCount();
+
+    if (queryRes === 0) {
+      throw new NotFoundException(['Post made by the user could not be found']);
+    }
+
+    const post = await this.findOne({ id: postId });
+    await post.remove();
   }
 }

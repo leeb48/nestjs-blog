@@ -5,6 +5,9 @@ import {
   Column,
   ManyToOne,
   ManyToMany,
+  JoinColumn,
+  JoinTable,
+  OneToMany,
 } from 'typeorm';
 import { User } from '../auth/user.entity';
 
@@ -32,6 +35,7 @@ export class BlogPost extends BaseEntity {
     type => User,
     user => user.likedPosts,
   )
+  @JoinTable()
   likedUsers: User[];
 
   // TODO: Column for comments

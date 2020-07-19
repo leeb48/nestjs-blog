@@ -6,6 +6,7 @@ import {
   Unique,
   OneToMany,
   ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { BlogPost } from '../post/blog-post.entity';
@@ -45,6 +46,7 @@ export class User extends BaseEntity {
     type => BlogPost,
     blogPost => blogPost.likedUsers,
   )
+  @JoinTable()
   likedPosts: BlogPost[];
 
   @Column()
