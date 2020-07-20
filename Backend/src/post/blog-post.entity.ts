@@ -4,12 +4,10 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  ManyToMany,
-  JoinColumn,
-  JoinTable,
   OneToMany,
 } from 'typeorm';
 import { User } from '../auth/user.entity';
+import { PostComment } from '../comment/comment.entity';
 
 @Entity()
 export class BlogPost extends BaseEntity {
@@ -35,6 +33,12 @@ export class BlogPost extends BaseEntity {
   username: string;
 
   // TODO: Column for comments
+  @OneToMany(
+    type => PostComment,
+    postComment => postComment.blogPost,
+    { eager: true },
+  )
+  postComments: PostComment[];
 
   @Column()
   datePosted: string;

@@ -62,7 +62,4 @@ export class PostController {
   ): Promise<void> {
     await this.postService.removePost(postId, user);
   }
-
-  // TODO: Work on comments feature
-  // TODO: Work on likes feature
 }

@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { BlogPost } from '../post/blog-post.entity';
+import { PostComment } from 'src/comment/comment.entity';
 
 @Entity()
 @Unique(['username'])
@@ -44,6 +45,13 @@ export class User extends BaseEntity {
 
   @Column()
   dateRegistered: string;
+
+  @OneToMany(
+    type => PostComment,
+    postComment => postComment.user,
+    { eager: true },
+  )
+  postComments: PostComment[];
 
   async validatePassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);
