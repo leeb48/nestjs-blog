@@ -17,6 +17,7 @@ export class PostRepository extends Repository<BlogPost> {
     newPost.title = title;
     newPost.content = content;
     newPost.user = user;
+    newPost.username = user.username;
 
     const date = new Date();
 
@@ -30,8 +31,20 @@ export class PostRepository extends Repository<BlogPost> {
     }
   }
 
+  async getPostById(id: number): Promise<BlogPost> {
+    const blogPost = await this.findOne({ id });
+
+    if (!blogPost) {
+      throw new NotFoundException(['Post could not be found']);
+    }
+
+    return blogPost;
+  }
+
   // TODO: Create fontend endpoint to use search feature
-  async getPosts(getPostFilter: GetPostFilter): Promise<BlogPost[]> {
+  async getPostsWithQueryFilter(
+    getPostFilter: GetPostFilter,
+  ): Promise<BlogPost[]> {
     const { search, postId } = getPostFilter;
 
     const query = this.createQueryBuilder('blog_post');
@@ -50,7 +63,8 @@ export class PostRepository extends Repository<BlogPost> {
     try {
       const posts = await query.getMany();
 
-      return posts;
+      // Reverse the posts to make the most recent post be on top
+      return posts.reverse();
     } catch (error) {
       throw new InternalServerErrorException([error.message]);
     }

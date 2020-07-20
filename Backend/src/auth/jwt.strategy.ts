@@ -5,6 +5,7 @@ import { UserRepository } from './user.repository';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { SendUserInfoDto } from './dto/send-user-info.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './user.entity';
 require('dotenv').config();
 
 @Injectable()
@@ -19,7 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtPayload): Promise<SendUserInfoDto> {
+  async validate(payload: JwtPayload): Promise<User> {
     const { username } = payload;
 
     const user = await this.userRepo.findOne({ username });

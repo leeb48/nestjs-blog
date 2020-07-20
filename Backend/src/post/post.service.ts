@@ -16,8 +16,14 @@ export class PostService {
     await this.postRepo.createPost(createPostDto, user);
   }
 
-  async getPosts(getPostFilter: GetPostFilter): Promise<BlogPost[]> {
-    return await this.postRepo.getPosts(getPostFilter);
+  async getPostById(id: number): Promise<BlogPost> {
+    return this.postRepo.getPostById(id);
+  }
+
+  async getPostsWithQueryFilter(
+    getPostFilter: GetPostFilter,
+  ): Promise<BlogPost[]> {
+    return await this.postRepo.getPostsWithQueryFilter(getPostFilter);
   }
 
   async getUsersPosts(user: User): Promise<BlogPost[]> {

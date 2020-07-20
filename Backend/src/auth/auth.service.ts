@@ -10,6 +10,8 @@ import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { AccessToken } from './interfaces/accessToken.interface';
+import { User } from './user.entity';
+import { SendUserInfoDto } from './dto/send-user-info.dto';
 
 @Injectable()
 export class AuthService {
@@ -40,5 +42,19 @@ export class AuthService {
     return {
       accessToken: this.jwtService.sign(payload),
     };
+  }
+
+  getUser(user: User): SendUserInfoDto {
+    const userInfo: SendUserInfoDto = {
+      bio: user.bio,
+      dateRegistered: user.dateRegistered,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
+      id: user.id,
+      blogPostsFromUser: user.blogPosts,
+    };
+
+    return userInfo;
   }
 }

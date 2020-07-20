@@ -4,10 +4,12 @@ import thunk from 'redux-thunk';
 import rootReducer from './reducers';
 import { AuthState } from './reducers/auth';
 import { Alert } from './reducers/alert';
+import { BlogPostState } from './reducers/blogPost';
 
 export interface AppState {
   alert: Alert[];
   auth: AuthState;
+  blogPost: BlogPostState;
 }
 
 const middleware: Middleware[] = [thunk];

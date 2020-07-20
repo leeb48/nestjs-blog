@@ -1,3 +1,5 @@
+import { BlogPost } from 'src/post/blog-post.entity';
+
 export class SendUserInfoDto {
   firstName: string;
 
@@ -8,6 +10,8 @@ export class SendUserInfoDto {
   bio: string;
 
   id: number;
+
+  blogPostsFromUser: BlogPost[];
 
   dateRegistered: string;
 }

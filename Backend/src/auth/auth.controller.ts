@@ -13,6 +13,7 @@ import { AccessToken } from './interfaces/accessToken.interface';
 import { GetUser } from 'src/decorators/get-user.decorator';
 import { SendUserInfoDto } from './dto/send-user-info.dto';
 import { JwtAuthGuard } from './guards/JwtAuthGuard.guard';
+import { User } from './user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -36,7 +37,7 @@ export class AuthController {
   // user profile information
   @Get()
   @UseGuards(JwtAuthGuard)
-  getUserInfo(@GetUser() user: SendUserInfoDto): SendUserInfoDto {
-    return user;
+  getUserInfo(@GetUser() user: User): SendUserInfoDto {
+    return this.authService.getUser(user);
   }
 }

@@ -1,6 +1,7 @@
 import { AuthActionTypes } from '../actions/types';
 import { AuthAction } from '../actions';
 import { setAuthToken } from '../utils/axiosConfig';
+import { BlogPost } from './blogPost';
 
 //---------------------------------------------------------------------
 // AUTH STATE
@@ -9,6 +10,7 @@ export interface User {
   firstName: string;
   lastName: string;
   bio: string;
+  blogPostsFromUser: BlogPost[];
   dateRegistered: string;
 }
 

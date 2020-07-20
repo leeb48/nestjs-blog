@@ -31,12 +31,8 @@ export class BlogPost extends BaseEntity {
   )
   user: User;
 
-  @ManyToMany(
-    type => User,
-    user => user.likedPosts,
-  )
-  @JoinTable()
-  likedUsers: User[];
+  @Column()
+  username: string;
 
   // TODO: Column for comments
 

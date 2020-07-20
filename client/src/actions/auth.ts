@@ -2,6 +2,7 @@ import axios from 'axios';
 import { AuthActionTypes } from './types';
 import { Dispatch } from 'react';
 import { setAlert } from './alert';
+import { BlogPost } from '../reducers/blogPost';
 
 //---------------------------------------------------------------------
 // INTERFACES
@@ -21,6 +22,7 @@ export interface GetUserDto {
   username: string;
   password: string;
   bio: string;
+  blogPostsFromUser: BlogPost[];
   dateRegistered: string;
 }
 
@@ -119,7 +121,7 @@ export const logoutUser = () => ({
   type: AuthActionTypes.logout,
 });
 
-export const getUser = () => async (dispatch: Dispatch<GetUserAction>) => {
+export const getUser = () => async (dispatch: Dispatch<any>) => {
   try {
     const res = await axios.get('/auth');
 
@@ -128,7 +130,15 @@ export const getUser = () => async (dispatch: Dispatch<GetUserAction>) => {
       payload: res.data,
     });
   } catch (error) {
-    console.log(error.response.data);
+    console.log(error.message);
+
+    const errors: string[] = error.response.data.message;
+
+    if (errors) {
+      errors.forEach((error) =>
+        dispatch(setAlert({ msg: error, type: 'danger' }))
+      );
+    }
   }
 };
 

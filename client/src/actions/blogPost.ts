@@ -1,7 +1,8 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { BlogPostActionTypes } from './types';
 import { Dispatch } from 'react';
 import { setAlert } from './alert';
+import { BlogPost } from '../reducers/blogPost';
 
 //---------------------------------------------------------------------
 // INTERFACES
@@ -18,13 +19,67 @@ export interface GetPostQuery {
 }
 
 // Action Types
-export interface CreatePostAction {
-  type: BlogPostActionTypes.createPost;
-  payload: boolean;
+export interface BlogPostSearchAction {
+  type: BlogPostActionTypes.searchBlogPost;
+  payload: BlogPost[];
 }
+
+export interface GetAllBlogPostsAction {
+  type: BlogPostActionTypes.getAllPosts;
+  payload: BlogPost[];
+}
+
+export interface GetBlogPostByIdAciton {
+  type: BlogPostActionTypes.getBLogPostById;
+  payload: BlogPost;
+}
+
+export type BlogPostAction =
+  | GetAllBlogPostsAction
+  | BlogPostSearchAction
+  | GetBlogPostByIdAciton;
 
 //---------------------------------------------------------------------
 // ACTION CREATORS
+
+export const getBlogPostWithQuery = (query: GetPostQuery) => async (
+  dispatch: Dispatch<any>
+) => {
+  try {
+    const { search, postId } = query;
+
+    let res: AxiosResponse;
+
+    if (search) {
+      res = await axios.get(`/blogpost?search=${search}`);
+
+      dispatch({
+        type: BlogPostActionTypes.searchBlogPost,
+        payload: res.data,
+      });
+
+      return;
+    }
+
+    if (postId) {
+      res = await axios.get(`/blogpost/${postId}`);
+
+      dispatch({
+        type: BlogPostActionTypes.getBLogPostById,
+        payload: res.data,
+      });
+
+      return;
+    }
+
+    res = await axios.get('/blogpost');
+
+    dispatch({
+      type: BlogPostActionTypes.getAllPosts,
+      payload: res.data,
+    });
+  } catch (error) {}
+};
 
 export const createPost = (newPostData: CreatePostDto, history: any) => async (
   dispatch: Dispatch<any>

@@ -1,117 +1,78 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Fragment, useEffect, useState } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { getBlogPostWithQuery, GetPostQuery } from '../../actions/blogPost';
 
 import './Post.scss';
+import { AppState } from '../../store';
+import PostItem from './PostItem';
+import { BlogPost } from '../../reducers/blogPost';
+import PostsMenu from './PostsMenu';
 
-const Posts = () => {
+interface PostsProps extends RouteComponentProps {
+  posts: BlogPost[];
+  getBlogPostWithQuery: (query: GetPostQuery) => void;
+}
+
+const Posts = ({ getBlogPostWithQuery, posts }: PostsProps) => {
+  const [submitSearch, setSubmitSearch] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<GetPostQuery>({
+    search: '',
+    postId: undefined,
+  });
+
+  useEffect(() => {
+    getBlogPostWithQuery(searchQuery);
+  }, [getBlogPostWithQuery, submitSearch]);
+
+  const renderBlogPostList = posts.map((post) => (
+    <PostItem key={post.id} post={post} />
+  ));
+
+  const onChange = (e: React.FormEvent<HTMLInputElement>) =>
+    setSearchQuery({
+      ...searchQuery,
+      [e.currentTarget.name]: e.currentTarget.value,
+    });
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setSubmitSearch(!submitSearch);
+
+    console.log(submitSearch);
+  };
+
   return (
     <Fragment>
       <section className="post-container container">
         <div className="columns">
-          {/* TODO: PostMenu Component */}
-          <div className="column is-3">
-            <Link
-              to="/newpost"
-              className="button is-info is-block is-alt is-large"
-            >
-              New Post
-            </Link>
-            <aside className="menu">
-              <p className="menu-label">Filters</p>
-              <ul className="menu-list">
-                <li>
-                  <span className="filter-button tag is-link is-large">
-                    Popular
-                  </span>
-                </li>
-                <li>
-                  <span className="filter-button tag is-warning is-large">
-                    Recent
-                  </span>
-                </li>
-                <li>
-                  <span className="filter-button tag is-success is-large">
-                    Rising
-                  </span>
-                </li>
-              </ul>
-            </aside>
-          </div>
+          <PostsMenu />
 
           <div className="column is-9">
-            <div className="box content">
-              <article className="post">
-                <a className="title is-4">Article 1</a>
-                <div className="media">
-                  <div className="media-content">
-                    <div className="content">
-                      <p>
-                        <a className="has-text-black" href="#">
-                          username
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                  <div className="media-right">
-                    <p className="tag">07/16/2020</p>
-                    <span className="like-icon has-text-danger">
-                      <i className="fas fa-heart"></i> 2
-                    </span>
-                    <span className="has-text-info">
-                      <i className="fa fa-comments"></i> 1
-                    </span>
-                  </div>
+            <form className="searchbar">
+              <div className="field has-addons">
+                <div className="control">
+                  <input
+                    className="input"
+                    name="search"
+                    onChange={(e) => onChange(e)}
+                    type="text"
+                    placeholder="Find a repository"
+                  />
                 </div>
-              </article>
+                <button
+                  onClick={(e) => onSubmit(e)}
+                  type="button"
+                  className="button is-info"
+                >
+                  Search
+                </button>
+              </div>
+            </form>
 
-              <article className="post">
-                <a className="title is-4">Article 1</a>
-                <div className="media">
-                  <div className="media-content">
-                    <div className="content">
-                      <p>
-                        <a className="has-text-black" href="#">
-                          username
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                  <div className="media-right">
-                    <p className="tag">07/16/2020</p>
-                    <span className="like-icon has-text-danger">
-                      <i className="fas fa-heart"></i> 2
-                    </span>
-                    <span className="has-text-info">
-                      <i className="fa fa-comments"></i> 1
-                    </span>
-                  </div>
-                </div>
-              </article>
-              <article className="post">
-                <a className="title is-4">Article 1</a>
-                <div className="media">
-                  <div className="media-content">
-                    <div className="content">
-                      <p>
-                        <a className="has-text-black" href="#">
-                          username
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                  <div className="media-right">
-                    <p className="tag">07/16/2020</p>
-                    <span className="like-icon has-text-danger">
-                      <i className="fas fa-heart"></i> 2
-                    </span>
-                    <span className="has-text-info">
-                      <i className="fa fa-comments"></i> 1
-                    </span>
-                  </div>
-                </div>
-              </article>
-            </div>
+            <div className="box content">{renderBlogPostList}</div>
           </div>
         </div>
       </section>
@@ -119,4 +80,8 @@ const Posts = () => {
   );
 };
 
-export default Posts;
+const mapStateToProps = (state: AppState) => ({
+  posts: state.blogPost.posts,
+});
+
+export default connect(mapStateToProps, { getBlogPostWithQuery })(Posts);

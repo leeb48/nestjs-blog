@@ -8,6 +8,7 @@ import {
   Query,
   Delete,
   Param,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostService } from './post.service';
@@ -34,10 +35,15 @@ export class PostController {
 
   // @INFO: Get posts based on query options
   @Get()
-  async getPosts(
+  async getPostsWithQueryFilter(
     @Query(ValidationPipe) getPostFilter: GetPostFilter,
   ): Promise<BlogPost[]> {
-    return await this.postService.getPosts(getPostFilter);
+    return await this.postService.getPostsWithQueryFilter(getPostFilter);
+  }
+
+  @Get('/:id')
+  async getPostById(@Param('id', ParseIntPipe) id: number): Promise<BlogPost> {
+    return await this.postService.getPostById(id);
   }
 
   // @INFO: Get all post made by the current authenticated user

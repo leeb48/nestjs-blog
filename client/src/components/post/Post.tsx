@@ -1,27 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { getBlogPostWithQuery, GetPostQuery } from '../../actions/blogPost';
+import { AppState } from '../../store';
+import PostContent from './PostContent';
+import { RouteComponentProps } from 'react-router-dom';
+import { BlogPost } from '../../reducers/blogPost';
 
-const Post = () => {
+interface RouteInfo {
+  id: string;
+}
+
+interface PostInterface extends RouteComponentProps<RouteInfo> {
+  getBlogPostWithQuery: (query: GetPostQuery) => void;
+  post: BlogPost | null;
+}
+
+const Post = ({ getBlogPostWithQuery, match, post }: PostInterface) => {
+  useEffect(() => {
+    // Get the data about the current post from the DB
+    // with the postId
+    const id = match.params.id;
+    getBlogPostWithQuery({ search: '', postId: parseInt(id) });
+  }, [getBlogPostWithQuery, match.params.id]);
+
   return (
     <div className="container">
       <section className="post">
         <div className="column is-8 is-offset-2">
-          <div className="card article">
-            <div className="card-content">
-              <div className="media">
-                <div className="media-content has-text-centered">
-                  <p className="title article-title">Post Title</p>
-                  <p className="subtitle is-5">By Username</p>
-                </div>
-              </div>
-              <div className="content-article-body">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Architecto a ex quibusdam? Alias dolor minus in aliquam vero
-                autem consequatur, harum consequuntur excepturi ut dolore
-                exercitationem suscipit nisi laborum, voluptates quae at facilis
-                dignissimos debitis praesentium nulla a cum ipsa.
-              </div>
-            </div>
-          </div>
+          {post && <PostContent post={post} />}
+
           {/* TODO: CreateComment Component */}
           <div className="card article">
             <div className="card-content">
@@ -71,4 +78,8 @@ const Post = () => {
   );
 };
 
-export default Post;
+const mapStateToProps = (state: AppState) => ({
+  post: state.blogPost.post,
+});
+
+export default connect(mapStateToProps, { getBlogPostWithQuery })(Post);

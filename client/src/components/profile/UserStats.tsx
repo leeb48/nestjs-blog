@@ -4,17 +4,18 @@ interface UserStatsProps {
   // TODO:
   // Number of posts
   // Number of liked posts
+  numberOfPosts: number | null;
   dateRegistered: string | null;
 }
 
-const UserStats = ({ dateRegistered }: UserStatsProps) => {
+const UserStats = ({ dateRegistered, numberOfPosts }: UserStatsProps) => {
   return (
     <Fragment>
       <section className="info-tiles">
         <div className="tile is-ancestor has-text-centered">
           <div className="tile is-parent">
             <article className="tile is-child box">
-              <p className="title">10</p>
+              <p className="title">{numberOfPosts}</p>
               <p className="subtitle"># of posts</p>
             </article>
           </div>

@@ -31,7 +31,10 @@ const Profile = ({ user, getUser }: ProfileProps) => {
               </div>
             </section>
 
-            <UserStats dateRegistered={user.dateRegistered} />
+            <UserStats
+              dateRegistered={user.dateRegistered}
+              numberOfPosts={user.blogPostsFromUser.length}
+            />
 
             {/* TODO: RecentPost Component */}
             <div className="columns">
