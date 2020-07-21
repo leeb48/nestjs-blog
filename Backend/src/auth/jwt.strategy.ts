@@ -8,6 +8,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 require('dotenv').config();
 
+// TODO: Do not send user's password!!!
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   // Decodes the JWT and calls validate function with the decoded JSON

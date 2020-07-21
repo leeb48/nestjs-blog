@@ -14,10 +14,10 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { PostService } from './post.service';
 import { BlogPost } from './blog-post.entity';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUser } from 'src/decorators/get-user.decorator';
-import { User } from 'src/auth/user.entity';
+import { GetUser } from '../decorators/get-user.decorator';
+import { User } from '../auth/user.entity';
 import { GetPostFilter } from './dto/get-post-filter.dto';
-import { JwtAuthGuard } from 'src/auth/guards/JwtAuthGuard.guard';
+import { JwtAuthGuard } from '../auth/guards/JwtAuthGuard.guard';
 
 @Controller('blogpost')
 export class PostController {

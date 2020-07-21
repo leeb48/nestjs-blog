@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PostRepository } from './post.repository';
 import { CreatePostDto } from './dto/create-post.dto';
 import { BlogPost } from './blog-post.entity';
-import { User } from 'src/auth/user.entity';
+import { User } from '../auth/user.entity';
 import { GetPostFilter } from './dto/get-post-filter.dto';
 
 @Injectable()
@@ -32,5 +32,9 @@ export class PostService {
 
   async removePost(postId: number, user: User): Promise<void> {
     await this.postRepo.removePost(postId, user);
+  }
+
+  test(): void {
+    console.log('This is a test');
   }
 }

@@ -6,7 +6,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { BlogPost } from '../post/blog-post.entity';
-import { User } from 'src/auth/user.entity';
+import { User } from '../auth/user.entity';
 
 @Entity()
 export class PostComment extends BaseEntity {

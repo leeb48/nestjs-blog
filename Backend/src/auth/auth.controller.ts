@@ -10,7 +10,7 @@ import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { AccessToken } from './interfaces/accessToken.interface';
-import { GetUser } from 'src/decorators/get-user.decorator';
+import { GetUser } from '../decorators/get-user.decorator';
 import { SendUserInfoDto } from './dto/send-user-info.dto';
 import { JwtAuthGuard } from './guards/JwtAuthGuard.guard';
 import { User } from './user.entity';

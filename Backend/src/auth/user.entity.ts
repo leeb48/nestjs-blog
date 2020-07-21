@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { BlogPost } from '../post/blog-post.entity';
-import { PostComment } from 'src/comment/comment.entity';
+import { PostComment } from '../comment/comment.entity';
 
 @Entity()
 @Unique(['username'])

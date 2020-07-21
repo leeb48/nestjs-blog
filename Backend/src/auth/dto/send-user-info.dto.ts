@@ -1,4 +1,4 @@
-import { BlogPost } from 'src/post/blog-post.entity';
+import { BlogPost } from '../../post/blog-post.entity';
 
 export class SendUserInfoDto {
   firstName: string;
