@@ -32,17 +32,13 @@ export class PostRepository extends Repository<BlogPost> {
   }
 
   async getPostById(id: number): Promise<BlogPost> {
-    try {
-      const blogPost = await this.findOne({ id });
+    const blogPost = await this.findOne({ id });
 
-      if (!blogPost) {
-        throw new NotFoundException(`Post with id ${id} could not be found`);
-      }
-
-      return blogPost;
-    } catch (error) {
-      console.log(error);
+    if (!blogPost) {
+      throw new NotFoundException([`Post with id ${id} could not be found`]);
     }
+
+    return blogPost;
   }
 
   // TODO: Create fontend endpoint to use search feature
@@ -99,6 +95,8 @@ export class PostRepository extends Repository<BlogPost> {
     if (queryRes === 0) {
       throw new NotFoundException(['Post made by the user could not be found']);
     }
+
+    // Remove all comments made on this post
 
     const post = await this.findOne({ id: postId });
     await post.remove();

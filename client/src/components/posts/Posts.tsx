@@ -2,32 +2,64 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getBlogPostWithQuery, GetPostQuery } from '../../actions/blogPost';
 
 import './Post.scss';
+
+// State Management
 import { AppState } from '../../store';
-import PostItem from './PostItem';
 import { BlogPost } from '../../reducers/blogPost';
+import { User } from '../../reducers/auth';
+
+// Components
 import PostsMenu from './PostsMenu';
+import PostItem from './PostItem';
+
+// Action Creators
+import { getBlogPostWithQuery, GetPostQuery } from '../../actions/blogPost';
+import { getUser } from '../../actions';
+import { removeBlogPost } from '../../actions/blogPost';
 
 interface PostsProps extends RouteComponentProps {
   posts: BlogPost[];
+  user: User | null;
   getBlogPostWithQuery: (query: GetPostQuery) => void;
+  getUser: () => void;
+  removeBlogPost: (postId: number) => void;
 }
 
-const Posts = ({ getBlogPostWithQuery, posts }: PostsProps) => {
+const Posts = ({
+  getBlogPostWithQuery,
+  getUser,
+  removeBlogPost,
+  posts,
+  user,
+}: PostsProps) => {
   const [submitSearch, setSubmitSearch] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<GetPostQuery>({
     search: '',
     postId: undefined,
   });
 
+  // Current user's info is needed to render user sensitive options
+  // such as editing or removing posts
+  useEffect(() => {
+    getUser();
+  }, [getUser]);
+
+  // Query a search to the backend only when user has finished typing
+  //  the search term
   useEffect(() => {
     getBlogPostWithQuery(searchQuery);
   }, [getBlogPostWithQuery, submitSearch]);
 
+  // Render Methods
   const renderBlogPostList = posts.map((post) => (
-    <PostItem key={post.id} post={post} />
+    <PostItem
+      key={post.id}
+      post={post}
+      user={user}
+      removeBlogPost={removeBlogPost}
+    />
   ));
 
   const onChange = (e: React.FormEvent<HTMLInputElement>) =>
@@ -81,7 +113,12 @@ const Posts = ({ getBlogPostWithQuery, posts }: PostsProps) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
+  user: state.auth.user,
   posts: state.blogPost.posts,
 });
 
-export default connect(mapStateToProps, { getBlogPostWithQuery })(Posts);
+export default connect(mapStateToProps, {
+  getBlogPostWithQuery,
+  getUser,
+  removeBlogPost,
+})(Posts);

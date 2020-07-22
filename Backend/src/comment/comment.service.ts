@@ -13,25 +13,15 @@ export class CommentService {
     private postService: PostService,
   ) {}
 
-  // TODO: Work on this next time
-
   async addComment(
     user: User,
     postId: number,
     addCommentDto: AddCommentDto,
   ): Promise<BlogPost> {
-    try {
-      const blogPost = await this.postService.getPostById(postId);
+    const blogPost = await this.postService.getPostById(postId);
 
-      if (!blogPost) {
-        throw new NotFoundException(`Post with id ${postId} was not found`);
-      }
+    await this.commentRepo.addComment(user, blogPost, addCommentDto);
 
-      await this.commentRepo.addComment(user, blogPost, addCommentDto);
-
-      return blogPost;
-    } catch (error) {
-      console.log(error.message);
-    }
+    return blogPost;
   }
 }

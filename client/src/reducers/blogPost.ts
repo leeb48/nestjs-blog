@@ -44,6 +44,12 @@ export const blogPost = (
         post: action.payload,
       };
 
+    case BlogPostActionTypes.removePost:
+      return {
+        ...state,
+        posts: state.posts.filter((post) => post.id !== action.payload),
+      };
+
     default:
       return state;
   }

@@ -22,14 +22,14 @@ export class PostComment extends BaseEntity {
   @ManyToOne(
     type => BlogPost,
     blogPost => blogPost.postComments,
-    { eager: false },
+    { eager: false, onDelete: 'CASCADE' },
   )
   blogPost: BlogPost;
 
   @ManyToOne(
     type => User,
     user => user.postComments,
-    { eager: false },
+    { eager: false, onDelete: 'CASCADE' },
   )
   user: User;
 }

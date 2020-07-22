@@ -40,6 +40,7 @@ export class PostController {
     return await this.postService.getUsersPosts(user);
   }
 
+  // @INFO: Get post by ID
   @Get('/:id')
   async getPostById(@Param('id', ParseIntPipe) id: number): Promise<BlogPost> {
     return await this.postService.getPostById(id);
@@ -52,6 +53,8 @@ export class PostController {
   ): Promise<BlogPost[]> {
     return await this.postService.getPostsWithQueryFilter(getPostFilter);
   }
+
+  // TODO: Edit post feature
 
   // @INFO: Remove a post made by a user
   @Delete('/:id')

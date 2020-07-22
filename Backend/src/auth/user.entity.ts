@@ -39,7 +39,7 @@ export class User extends BaseEntity {
   @OneToMany(
     type => BlogPost,
     post => post.user,
-    { eager: true },
+    { eager: true, onDelete: 'CASCADE' },
   )
   blogPosts: BlogPost[];
 
@@ -49,7 +49,7 @@ export class User extends BaseEntity {
   @OneToMany(
     type => PostComment,
     postComment => postComment.user,
-    { eager: true },
+    { eager: true, onDelete: 'CASCADE' },
   )
   postComments: PostComment[];
 

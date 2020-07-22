@@ -34,10 +34,16 @@ export interface GetBlogPostByIdAciton {
   payload: BlogPost;
 }
 
+export interface RemoveBlogPostAction {
+  type: BlogPostActionTypes.removePost;
+  payload: Number;
+}
+
 export type BlogPostAction =
   | GetAllBlogPostsAction
   | BlogPostSearchAction
-  | GetBlogPostByIdAciton;
+  | GetBlogPostByIdAciton
+  | RemoveBlogPostAction;
 
 //---------------------------------------------------------------------
 // ACTION CREATORS
@@ -96,6 +102,31 @@ export const createPost = (newPostData: CreatePostDto, history: any) => async (
     dispatch(setAlert({ msg: 'Post Created', type: 'success' }));
 
     history.push('/');
+  } catch (error) {
+    console.log(error.message);
+
+    const errors: string[] = error.response.data.message;
+
+    if (errors) {
+      errors.forEach((error) =>
+        dispatch(setAlert({ msg: error, type: 'danger' }))
+      );
+    }
+  }
+};
+
+export const removeBlogPost = (postId: number) => async (
+  dispatch: Dispatch<any>
+) => {
+  try {
+    await axios.delete(`/blogpost/${postId}`);
+
+    dispatch({
+      type: BlogPostActionTypes.removePost,
+      payload: postId,
+    });
+
+    dispatch(setAlert({ msg: 'Post was removed', type: 'success' }));
   } catch (error) {
     console.log(error.message);
 
