@@ -11,7 +11,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     try {
       return (await super.canActivate(context)) as boolean;
     } catch (error) {
-      throw new UnauthorizedException(['User is not authorized']);
+      throw new UnauthorizedException(['User is not authorized!']);
     }
   }
 }

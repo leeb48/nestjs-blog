@@ -32,13 +32,17 @@ export class PostRepository extends Repository<BlogPost> {
   }
 
   async getPostById(id: number): Promise<BlogPost> {
-    const blogPost = await this.findOne({ id });
+    try {
+      const blogPost = await this.findOne({ id });
 
-    if (!blogPost) {
-      throw new NotFoundException(['Post could not be found']);
+      if (!blogPost) {
+        throw new NotFoundException(`Post with id ${id} could not be found`);
+      }
+
+      return blogPost;
+    } catch (error) {
+      console.log(error);
     }
-
-    return blogPost;
   }
 
   // TODO: Create fontend endpoint to use search feature

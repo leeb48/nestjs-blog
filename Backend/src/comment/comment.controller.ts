@@ -11,6 +11,7 @@ import { GetUser } from '../decorators/get-user.decorator';
 import { User } from '../auth/user.entity';
 import { AddCommentDto } from './dto/add-comment.dto';
 import { JwtAuthGuard } from '../auth/guards/JwtAuthGuard.guard';
+import { BlogPost } from 'src/post/blog-post.entity';
 
 @Controller('comment')
 export class CommentController {
@@ -22,7 +23,7 @@ export class CommentController {
     @GetUser() user: User,
     @Param('postId', ParseIntPipe) postId: number,
     @Body() addCommentDto: AddCommentDto,
-  ): Promise<void> {
-    await this.commentService.addComment(user, postId, addCommentDto);
+  ): Promise<BlogPost> {
+    return await this.commentService.addComment(user, postId, addCommentDto);
   }
 }

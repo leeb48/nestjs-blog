@@ -33,12 +33,11 @@ export class PostController {
     await this.postService.createPost(createPostDto, user);
   }
 
-  // @INFO: Get posts based on query options
-  @Get()
-  async getPostsWithQueryFilter(
-    @Query(ValidationPipe) getPostFilter: GetPostFilter,
-  ): Promise<BlogPost[]> {
-    return await this.postService.getPostsWithQueryFilter(getPostFilter);
+  // @INFO: Get all post made by the current authenticated user
+  @Get('/curr-user-posts')
+  @UseGuards(JwtAuthGuard)
+  async getUsersPosts(@GetUser() user: User): Promise<BlogPost[]> {
+    return await this.postService.getUsersPosts(user);
   }
 
   @Get('/:id')
@@ -46,11 +45,12 @@ export class PostController {
     return await this.postService.getPostById(id);
   }
 
-  // @INFO: Get all post made by the current authenticated user
-  @Get('/curr-user-posts')
-  @UseGuards(AuthGuard())
-  async getUsersPosts(@GetUser() user: User): Promise<BlogPost[]> {
-    return await this.postService.getUsersPosts(user);
+  // @INFO: Get posts based on query options
+  @Get()
+  async getPostsWithQueryFilter(
+    @Query(ValidationPipe) getPostFilter: GetPostFilter,
+  ): Promise<BlogPost[]> {
+    return await this.postService.getPostsWithQueryFilter(getPostFilter);
   }
 
   // @INFO: Remove a post made by a user
