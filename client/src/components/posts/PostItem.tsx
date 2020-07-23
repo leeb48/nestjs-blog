@@ -21,9 +21,12 @@ const PostItem = ({ post, user, removeBlogPost }: PostItemProps) => {
           >
             Remove
           </button>
-          <button className="button is-small is-warning level-right">
+          <Link
+            to={`/editpost/${post.id}`}
+            className="button is-small is-warning level-right"
+          >
             Edit
-          </button>
+          </Link>
         </div>
       </div>
     ) : null;

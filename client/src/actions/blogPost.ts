@@ -13,6 +13,11 @@ export interface CreatePostDto {
   content: string;
 }
 
+export interface UpdatePostDto {
+  title?: string;
+  content?: string;
+}
+
 export interface GetPostQuery {
   search?: string;
   postId?: number;
@@ -39,7 +44,12 @@ export interface RemoveBlogPostAction {
   payload: Number;
 }
 
+export interface UpdateBlogPostAction {
+  type: BlogPostActionTypes.updatePost;
+}
+
 export type BlogPostAction =
+  | UpdateBlogPostAction
   | GetAllBlogPostsAction
   | BlogPostSearchAction
   | GetBlogPostByIdAciton
@@ -48,14 +58,62 @@ export type BlogPostAction =
 //---------------------------------------------------------------------
 // ACTION CREATORS
 
+export const updateBlogPost = (
+  updatePostDto: UpdatePostDto,
+  postId: string
+) => async (dispatch: Dispatch<any>) => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    await axios.patch(`/blogpost/${postId}`, updatePostDto, config);
+
+    dispatch({
+      type: BlogPostActionTypes.updatePost,
+    });
+
+    dispatch(setAlert({ msg: 'Post Updated', type: 'success' }));
+  } catch (error) {
+    console.log(error.message);
+
+    const errors: string[] = error.response.data.message;
+
+    if (errors) {
+      errors.forEach((error) =>
+        dispatch(setAlert({ msg: error, type: 'danger' }))
+      );
+    }
+  }
+};
+
+export const getBlogPostById = (postId: string) => async (
+  dispatch: Dispatch<any>
+) => {
+  // Get a single post that matches the postId
+  if (postId) {
+    const res = await axios.get(`/blogpost/${postId}`);
+
+    dispatch({
+      type: BlogPostActionTypes.getBLogPostById,
+      payload: res.data,
+    });
+
+    return;
+  }
+};
+
 export const getBlogPostWithQuery = (query: GetPostQuery) => async (
   dispatch: Dispatch<any>
 ) => {
   try {
-    const { search, postId } = query;
+    const { search } = query;
 
     let res: AxiosResponse;
 
+    // Get all posts that meet the search criteria
     if (search) {
       res = await axios.get(`/blogpost?search=${search}`);
 
@@ -67,24 +125,24 @@ export const getBlogPostWithQuery = (query: GetPostQuery) => async (
       return;
     }
 
-    if (postId) {
-      res = await axios.get(`/blogpost/${postId}`);
-
-      dispatch({
-        type: BlogPostActionTypes.getBLogPostById,
-        payload: res.data,
-      });
-
-      return;
-    }
-
+    // Get all blogPosts
     res = await axios.get('/blogpost');
 
     dispatch({
       type: BlogPostActionTypes.getAllPosts,
       payload: res.data,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error.message);
+
+    const errors: string[] = error.response.data.message;
+
+    if (errors) {
+      errors.forEach((error) =>
+        dispatch(setAlert({ msg: error, type: 'danger' }))
+      );
+    }
+  }
 };
 
 export const createPost = (newPostData: CreatePostDto, history: any) => async (

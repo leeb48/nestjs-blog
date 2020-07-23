@@ -15,6 +15,7 @@ export enum AlertActionTypes {
 // BlogPost Types
 export enum BlogPostActionTypes {
   createPost = 'CREATE_POST',
+  updatePost = 'UPDATE_POST',
   searchBlogPost = 'SEARCH_BLOGPOST',
   getBLogPostById = 'GET_BLOGPOST_BY_ID',
   getAllPosts = 'GET_ALL_POSTS',

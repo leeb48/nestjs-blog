@@ -9,6 +9,7 @@ import {
   Delete,
   Param,
   ParseIntPipe,
+  Patch,
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostService } from './post.service';
@@ -18,6 +19,7 @@ import { GetUser } from '../decorators/get-user.decorator';
 import { User } from '../auth/user.entity';
 import { GetPostFilter } from './dto/get-post-filter.dto';
 import { JwtAuthGuard } from '../auth/guards/JwtAuthGuard.guard';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 @Controller('blogpost')
 export class PostController {
@@ -41,8 +43,10 @@ export class PostController {
   }
 
   // @INFO: Get post by ID
-  @Get('/:id')
-  async getPostById(@Param('id', ParseIntPipe) id: number): Promise<BlogPost> {
+  @Get('/:postId')
+  async getPostById(
+    @Param('postId', ParseIntPipe) id: number,
+  ): Promise<BlogPost> {
     return await this.postService.getPostById(id);
   }
 
@@ -54,7 +58,16 @@ export class PostController {
     return await this.postService.getPostsWithQueryFilter(getPostFilter);
   }
 
-  // TODO: Edit post feature
+  // @INFO: Update post
+  @Patch('/:postId')
+  @UseGuards(JwtAuthGuard)
+  async updatePost(
+    @Param('postId', ParseIntPipe) postId: number,
+    @Body(ValidationPipe) updatePostDto: UpdatePostDto,
+    @GetUser() user: User,
+  ): Promise<void> {
+    await this.postService.updatePost(postId, updatePostDto, user);
+  }
 
   // @INFO: Remove a post made by a user
   @Delete('/:id')

@@ -4,9 +4,11 @@ import { CreatePostDto } from './dto/create-post.dto';
 import {
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { User } from '../auth/user.entity';
 import { GetPostFilter } from './dto/get-post-filter.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 @EntityRepository(BlogPost)
 export class PostRepository extends Repository<BlogPost> {
@@ -31,6 +33,26 @@ export class PostRepository extends Repository<BlogPost> {
     }
   }
 
+  async updatePost(
+    postId: number,
+    updatePostDto: UpdatePostDto,
+    user: User,
+  ): Promise<void> {
+    const blogPost = await this.getPostById(postId);
+
+    const { title, content } = updatePostDto;
+
+    //  Only the use who created the post has privilege to update post
+    if (blogPost.username !== user.username) {
+      throw new UnauthorizedException(['Unauthorized access']);
+    }
+
+    if (title) blogPost.title = title;
+    if (content) blogPost.content = content;
+
+    await blogPost.save();
+  }
+
   async getPostById(id: number): Promise<BlogPost> {
     const blogPost = await this.findOne({ id });
 
@@ -41,7 +63,6 @@ export class PostRepository extends Repository<BlogPost> {
     return blogPost;
   }
 
-  // TODO: Create fontend endpoint to use search feature
   async getPostsWithQueryFilter(
     getPostFilter: GetPostFilter,
   ): Promise<BlogPost[]> {

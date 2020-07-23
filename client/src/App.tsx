@@ -17,6 +17,7 @@ import NewPostForm from './components/forms/NewPostForm';
 import Post from './components/post/Post';
 import { setAuthToken } from './utils/axiosConfig';
 import { getUser } from './actions';
+import EditPostForm from './components/forms/EditPostForm';
 
 const store = configureStore();
 
@@ -43,6 +44,7 @@ function App() {
 
           {/* TODO: Make it into a private route */}
           <Route exact path="/newpost" component={NewPostForm} />
+          <Route exact path="/editpost/:postId" component={EditPostForm} />
         </Switch>
       </Router>
     </Provider>

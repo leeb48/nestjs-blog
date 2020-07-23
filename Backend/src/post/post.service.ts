@@ -5,6 +5,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { BlogPost } from './blog-post.entity';
 import { User } from '../auth/user.entity';
 import { GetPostFilter } from './dto/get-post-filter.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 @Injectable()
 export class PostService {
@@ -34,7 +35,11 @@ export class PostService {
     await this.postRepo.removePost(postId, user);
   }
 
-  test(): void {
-    console.log('This is a test');
+  async updatePost(
+    postId: number,
+    updatePostDto: UpdatePostDto,
+    user: User,
+  ): Promise<void> {
+    await this.postRepo.updatePost(postId, updatePostDto, user);
   }
 }
