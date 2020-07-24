@@ -20,13 +20,20 @@ export interface PostComment {
 
 export interface BlogPostState {
   posts: BlogPost[];
-  post: BlogPost | null;
+  post: BlogPost;
   loading: boolean;
 }
 
 const initalState: BlogPostState = {
   posts: [],
-  post: null,
+  post: {
+    content: '',
+    datePosted: '',
+    id: 0,
+    postComments: [],
+    title: '',
+    username: '',
+  },
   loading: true,
 };
 
@@ -46,10 +53,15 @@ export const blogPost = (
       };
 
     case BlogPostActionTypes.getBLogPostById:
-    case BlogPostActionTypes.addComment:
       return {
         ...state,
         post: action.payload,
+      };
+
+    case BlogPostActionTypes.addComment:
+      return {
+        ...state,
+        post: { ...state.post, postComments: action.payload },
       };
 
     case BlogPostActionTypes.removePost:

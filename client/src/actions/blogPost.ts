@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { BlogPostActionTypes } from './types';
 import { Dispatch } from 'react';
 import { setAlert } from './alert';
-import { BlogPost } from '../reducers/blogPost';
+import { BlogPost, PostComment } from '../reducers/blogPost';
 
 //---------------------------------------------------------------------
 // INTERFACES
@@ -54,7 +54,7 @@ export interface UpdateBlogPostAction {
 
 export interface AddCommentAction {
   type: BlogPostActionTypes.addComment;
-  payload: BlogPost;
+  payload: PostComment[];
 }
 
 export type BlogPostAction =

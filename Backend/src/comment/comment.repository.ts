@@ -1,4 +1,4 @@
-import { Repository, EntityRepository, AdvancedConsoleLogger } from 'typeorm';
+import { Repository, EntityRepository } from 'typeorm';
 import { PostComment } from './comment.entity';
 import { AddCommentDto } from './dto/add-comment.dto';
 import { User } from '../auth/user.entity';
@@ -11,7 +11,7 @@ export class CommentRepository extends Repository<PostComment> {
     user: User,
     blogPost: BlogPost,
     addCommentDto: AddCommentDto,
-  ): Promise<BlogPost> {
+  ): Promise<PostComment[]> {
     try {
       const { content } = addCommentDto;
 
@@ -23,7 +23,7 @@ export class CommentRepository extends Repository<PostComment> {
 
       await newComment.save();
 
-      return blogPost;
+      return blogPost.postComments;
     } catch (error) {
       throw new InternalServerErrorException([error.message]);
     }
