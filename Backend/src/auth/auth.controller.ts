@@ -19,6 +19,8 @@ import { User } from './user.entity';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  // @route   /auth/register
+  // @info    Register a new user
   @Post('/register')
   async registerUser(
     @Body(ValidationPipe) createUserDto: CreateUserDto,
@@ -26,6 +28,8 @@ export class AuthController {
     return await this.authService.registerUser(createUserDto);
   }
 
+  // @route   /auth/login
+  // @info    Login a user
   @Post('/login')
   async loginUser(
     @Body(ValidationPipe) authCredentialDto: AuthCredentialDto,
@@ -33,8 +37,9 @@ export class AuthController {
     return await this.authService.loginUser(authCredentialDto);
   }
 
-  // Authenticate user from request token and send back
-  // user profile information
+  // @route   /auth
+  // @info    Sends information about the user when the
+  //          request is made with a valid token
   @Get()
   @UseGuards(JwtAuthGuard)
   getUserInfo(@GetUser() user: User): SendUserInfoDto {

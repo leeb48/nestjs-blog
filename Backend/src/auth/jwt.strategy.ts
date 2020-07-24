@@ -8,20 +8,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 require('dotenv').config();
 
-// TODO: Do not send user's password!!!
-
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   // Decodes the JWT and calls validate function with the decoded JSON
   constructor(
     @InjectRepository(UserRepository) private userRepo: UserRepository,
   ) {
+    // Extract the token from the request header
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: process.env.JWT_SECRET,
     });
   }
 
+  // This method gets invoked after the token is decoded
   async validate(payload: JwtPayload): Promise<User> {
     const { username } = payload;
 
@@ -31,6 +31,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException(['User is unauthorized']);
     }
 
+    // Appends the found user to the request object
     return user;
   }
 }

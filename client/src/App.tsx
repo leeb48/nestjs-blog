@@ -18,6 +18,7 @@ import Post from './components/post/Post';
 import { setAuthToken } from './utils/axiosConfig';
 import { getUser } from './actions';
 import EditPostForm from './components/forms/EditPostForm';
+import PrivateRoute from './components/routes/PrivateRoute';
 
 const store = configureStore();
 
@@ -27,7 +28,9 @@ setAuthToken(localStorage.token);
 function App() {
   useEffect(() => {
     // Immeidately authenticate the user if an authorized token exists
-    store.dispatch<any>(getUser());
+    if (localStorage.token) {
+      store.dispatch<any>(getUser());
+    }
   }, []);
 
   return (
@@ -38,13 +41,16 @@ function App() {
         <Switch>
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
-          <Route exact path="/myprofile" component={Profile} />
           <Route exact path="/posts" component={Posts} />
           <Route exact path="/post/:id" component={Post} />
 
-          {/* TODO: Make it into a private route */}
-          <Route exact path="/newpost" component={NewPostForm} />
-          <Route exact path="/editpost/:postId" component={EditPostForm} />
+          <PrivateRoute exact path="/myprofile" compoment={Profile} />
+          <PrivateRoute exact path="/newpost" compoment={NewPostForm} />
+          <PrivateRoute
+            exact
+            path="/editpost/:postId"
+            compoment={EditPostForm}
+          />
         </Switch>
       </Router>
     </Provider>

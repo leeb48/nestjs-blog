@@ -1,6 +1,8 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 require('dotenv').config();
 
+// SYNC env variable needs to be converted to a boolean value
+// when it is being used to configure TypeORM
 const sync = (syncOption: string): boolean => {
   if (syncOption === 'true') return true;
   else return false;

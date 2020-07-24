@@ -25,7 +25,8 @@ import { UpdatePostDto } from './dto/update-post.dto';
 export class PostController {
   constructor(private postService: PostService) {}
 
-  // @INFO: Create a post after user authentication
+  // @route /blogpost
+  // @info  Create a post after user authentication
   @Post()
   @UseGuards(JwtAuthGuard)
   async createPost(
@@ -35,14 +36,16 @@ export class PostController {
     await this.postService.createPost(createPostDto, user);
   }
 
-  // @INFO: Get all post made by the current authenticated user
+  // @route /blogpost/curr-user-posts
+  // @info  Get all post made by the current authenticated user
   @Get('/curr-user-posts')
   @UseGuards(JwtAuthGuard)
   async getUsersPosts(@GetUser() user: User): Promise<BlogPost[]> {
     return await this.postService.getUsersPosts(user);
   }
 
-  // @INFO: Get post by ID
+  // @route /blogpost/:postId
+  // @info  Get post by ID
   @Get('/:postId')
   async getPostById(
     @Param('postId', ParseIntPipe) id: number,
@@ -50,7 +53,8 @@ export class PostController {
     return await this.postService.getPostById(id);
   }
 
-  // @INFO: Get posts based on query options
+  // @route /blogpost
+  // @info  Get posts based on query options
   @Get()
   async getPostsWithQueryFilter(
     @Query(ValidationPipe) getPostFilter: GetPostFilter,
@@ -58,7 +62,8 @@ export class PostController {
     return await this.postService.getPostsWithQueryFilter(getPostFilter);
   }
 
-  // @INFO: Update post
+  // @route /blogpost/:postId
+  // @info  Update post
   @Patch('/:postId')
   @UseGuards(JwtAuthGuard)
   async updatePost(
@@ -69,7 +74,8 @@ export class PostController {
     await this.postService.updatePost(postId, updatePostDto, user);
   }
 
-  // @INFO: Remove a post made by a user
+  // @route /blogpost/:postId
+  // @info  Remove a post made by a user
   @Delete('/:id')
   @UseGuards(AuthGuard())
   async removePost(

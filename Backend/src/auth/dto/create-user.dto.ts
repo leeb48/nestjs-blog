@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsOptional, MinLength, MaxLength } from 'class-validator';
 
+// DTO used for registering a new user
 export class CreateUserDto {
   @IsNotEmpty()
   firstName: string;

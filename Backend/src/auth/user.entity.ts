@@ -5,8 +5,6 @@ import {
   PrimaryGeneratedColumn,
   Unique,
   OneToMany,
-  ManyToMany,
-  JoinTable,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { BlogPost } from '../post/blog-post.entity';
@@ -36,6 +34,7 @@ export class User extends BaseEntity {
   @Column()
   bio: string;
 
+  // One user may create many blog posts
   @OneToMany(
     type => BlogPost,
     post => post.user,
@@ -46,6 +45,7 @@ export class User extends BaseEntity {
   @Column()
   dateRegistered: string;
 
+  // One user may create many comments
   @OneToMany(
     type => PostComment,
     postComment => postComment.user,
@@ -53,6 +53,7 @@ export class User extends BaseEntity {
   )
   postComments: PostComment[];
 
+  //
   async validatePassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);
 

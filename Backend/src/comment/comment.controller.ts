@@ -17,6 +17,8 @@ import { BlogPost } from 'src/post/blog-post.entity';
 export class CommentController {
   constructor(private commentService: CommentService) {}
 
+  // @route   /comment/:postId
+  // @info    A comment is added to a post with postId
   @Post('/:postId')
   @UseGuards(JwtAuthGuard)
   async addComment(
