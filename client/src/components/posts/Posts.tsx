@@ -23,7 +23,7 @@ interface PostsProps extends RouteComponentProps {
   posts: BlogPost[];
   user: User | null;
   getBlogPostWithQuery: (query: GetPostQuery) => void;
-  getUser: () => void;
+  getUser: (showAlert: boolean) => void;
   removeBlogPost: (postId: number) => void;
 }
 
@@ -43,7 +43,7 @@ const Posts = ({
   // Current user's info is needed to render user sensitive options
   // such as editing or removing posts
   useEffect(() => {
-    getUser();
+    getUser(false);
   }, [getUser]);
 
   // Query a search to the backend only when user has finished typing

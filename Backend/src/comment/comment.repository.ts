@@ -11,7 +11,7 @@ export class CommentRepository extends Repository<PostComment> {
     user: User,
     blogPost: BlogPost,
     addCommentDto: AddCommentDto,
-  ): Promise<void> {
+  ): Promise<BlogPost> {
     try {
       const { content } = addCommentDto;
 
@@ -22,6 +22,8 @@ export class CommentRepository extends Repository<PostComment> {
       newComment.user = user;
 
       await newComment.save();
+
+      return blogPost;
     } catch (error) {
       throw new InternalServerErrorException([error.message]);
     }

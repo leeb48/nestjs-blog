@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommentRepository } from './comment.repository';
 import { User } from '../auth/user.entity';
@@ -20,8 +20,6 @@ export class CommentService {
   ): Promise<BlogPost> {
     const blogPost = await this.postService.getPostById(postId);
 
-    await this.commentRepo.addComment(user, blogPost, addCommentDto);
-
-    return blogPost;
+    return await this.commentRepo.addComment(user, blogPost, addCommentDto);
   }
 }

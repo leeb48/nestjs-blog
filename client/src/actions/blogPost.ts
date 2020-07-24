@@ -18,6 +18,10 @@ export interface UpdatePostDto {
   content?: string;
 }
 
+export interface CreateCommentDto {
+  content: string;
+}
+
 export interface GetPostQuery {
   search?: string;
   postId?: number;
@@ -48,15 +52,59 @@ export interface UpdateBlogPostAction {
   type: BlogPostActionTypes.updatePost;
 }
 
+export interface AddCommentAction {
+  type: BlogPostActionTypes.addComment;
+  payload: BlogPost;
+}
+
 export type BlogPostAction =
   | UpdateBlogPostAction
   | GetAllBlogPostsAction
   | BlogPostSearchAction
   | GetBlogPostByIdAciton
-  | RemoveBlogPostAction;
+  | RemoveBlogPostAction
+  | AddCommentAction;
 
 //---------------------------------------------------------------------
 // ACTION CREATORS
+
+export const createComment = (
+  createCommentDto: CreateCommentDto,
+  postId: number
+) => async (dispatch: Dispatch<any>) => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const res = await axios.post(
+      `/comment/${postId}`,
+      createCommentDto,
+      config
+    );
+
+    console.log(res.data);
+
+    dispatch({
+      type: BlogPostActionTypes.addComment,
+      payload: res.data,
+    });
+
+    dispatch(setAlert({ msg: 'Comment added', type: 'success' }));
+  } catch (error) {
+    console.log(error.message);
+
+    const errors: string[] = error.response.data.message;
+
+    if (errors) {
+      errors.forEach((error) =>
+        dispatch(setAlert({ msg: error, type: 'danger' }))
+      );
+    }
+  }
+};
 
 export const updateBlogPost = (
   updatePostDto: UpdatePostDto,

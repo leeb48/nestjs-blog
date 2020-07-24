@@ -121,7 +121,9 @@ export const logoutUser = () => ({
   type: AuthActionTypes.logout,
 });
 
-export const getUser = () => async (dispatch: Dispatch<any>) => {
+export const getUser = (showAlert: boolean = true) => async (
+  dispatch: Dispatch<any>
+) => {
   try {
     const res = await axios.get('/auth');
 
@@ -134,10 +136,12 @@ export const getUser = () => async (dispatch: Dispatch<any>) => {
 
     const errors: string[] = error.response.data.message;
 
-    if (errors) {
-      errors.forEach((error) =>
-        dispatch(setAlert({ msg: error, type: 'danger' }))
-      );
+    if (showAlert) {
+      if (errors) {
+        errors.forEach((error) =>
+          dispatch(setAlert({ msg: error, type: 'danger' }))
+        );
+      }
     }
   }
 };

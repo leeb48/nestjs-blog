@@ -21,4 +21,6 @@ export enum BlogPostActionTypes {
   getAllPosts = 'GET_ALL_POSTS',
   getCurrUserPost = 'GET_CURR_USER_POST',
   removePost = 'REMOVE_POST',
+
+  addComment = 'ADD_COMMENT',
 }

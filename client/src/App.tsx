@@ -19,6 +19,7 @@ import { setAuthToken } from './utils/axiosConfig';
 import { getUser } from './actions';
 import EditPostForm from './components/forms/EditPostForm';
 import PrivateRoute from './components/routes/PrivateRoute';
+import Landing from './components/layout/Landing';
 
 const store = configureStore();
 
@@ -29,7 +30,7 @@ function App() {
   useEffect(() => {
     // Immeidately authenticate the user if an authorized token exists
     if (localStorage.token) {
-      store.dispatch<any>(getUser());
+      store.dispatch<any>(getUser(false));
     }
   }, []);
 
@@ -39,6 +40,7 @@ function App() {
         <Navbar />
         <Alerts />
         <Switch>
+          <Route exact path="/" component={Landing} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/posts" component={Posts} />

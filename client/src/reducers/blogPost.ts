@@ -9,6 +9,13 @@ export interface BlogPost {
   title: string;
   content: string;
   datePosted: string;
+  postComments: PostComment[];
+}
+
+export interface PostComment {
+  id: number;
+  content: string;
+  username: string;
 }
 
 export interface BlogPostState {
@@ -39,6 +46,7 @@ export const blogPost = (
       };
 
     case BlogPostActionTypes.getBLogPostById:
+    case BlogPostActionTypes.addComment:
       return {
         ...state,
         post: action.payload,
