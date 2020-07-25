@@ -3,7 +3,12 @@ import { PostComment } from './comment.entity';
 import { AddCommentDto } from './dto/add-comment.dto';
 import { User } from '../auth/user.entity';
 import { BlogPost } from 'src/post/blog-post.entity';
-import { InternalServerErrorException } from '@nestjs/common';
+import {
+  InternalServerErrorException,
+  UnauthorizedException,
+  NotFoundException,
+} from '@nestjs/common';
+import { EditCommentDto } from './dto/edit-comment.dto';
 
 @EntityRepository(PostComment)
 export class CommentRepository extends Repository<PostComment> {
@@ -22,6 +27,35 @@ export class CommentRepository extends Repository<PostComment> {
       newComment.user = user;
 
       await newComment.save();
+
+      return blogPost.postComments;
+    } catch (error) {
+      throw new InternalServerErrorException([error.message]);
+    }
+  }
+
+  async editComment(
+    user: User,
+    blogPost: BlogPost,
+    commentId: number,
+    editCommentDto: EditCommentDto,
+  ): Promise<PostComment[]> {
+    try {
+      const { content } = editCommentDto;
+
+      const comment = await this.findOne({ id: commentId });
+
+      if (!comment) {
+        throw new NotFoundException(['Comment not found']);
+      }
+
+      if (comment.username !== user.username) {
+        throw new UnauthorizedException(['Not authorized to edit comment']);
+      }
+
+      comment.content = content;
+
+      await comment.save();
 
       return blogPost.postComments;
     } catch (error) {

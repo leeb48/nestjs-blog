@@ -5,14 +5,15 @@ import {
   ParseIntPipe,
   Body,
   UseGuards,
+  Patch,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { GetUser } from '../decorators/get-user.decorator';
 import { User } from '../auth/user.entity';
 import { AddCommentDto } from './dto/add-comment.dto';
 import { JwtAuthGuard } from '../auth/guards/JwtAuthGuard.guard';
-import { BlogPost } from 'src/post/blog-post.entity';
 import { PostComment } from './comment.entity';
+import { EditCommentDto } from './dto/edit-comment.dto';
 
 @Controller('comment')
 export class CommentController {
@@ -28,5 +29,22 @@ export class CommentController {
     @Body() addCommentDto: AddCommentDto,
   ): Promise<PostComment[]> {
     return await this.commentService.addComment(user, postId, addCommentDto);
+  }
+
+  // @route   /comment/:postId/:commentId
+  @Patch('/:postId/:commentId')
+  @UseGuards(JwtAuthGuard)
+  async editComment(
+    @GetUser() user: User,
+    @Param('postId', ParseIntPipe) postId: number,
+    @Param('commentId', ParseIntPipe) commentId: number,
+    @Body() editCommentDto: EditCommentDto,
+  ): Promise<PostComment[]> {
+    return await this.commentService.editComment(
+      user,
+      postId,
+      commentId,
+      editCommentDto,
+    );
   }
 }
