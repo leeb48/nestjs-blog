@@ -5,6 +5,7 @@ import {
   PrimaryGeneratedColumn,
   Unique,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { BlogPost } from '../post/blog-post.entity';

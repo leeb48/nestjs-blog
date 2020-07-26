@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { BlogPost } from '../post/blog-post.entity';
 import { User } from '../auth/user.entity';

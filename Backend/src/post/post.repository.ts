@@ -72,7 +72,10 @@ export class PostRepository extends Repository<BlogPost> {
   ): Promise<BlogPost[]> {
     const { search, postId } = getPostFilter;
 
-    const query = this.createQueryBuilder('blog_post');
+    const query = this.createQueryBuilder('blog_post').leftJoinAndSelect(
+      'blog_post.postComments',
+      'postComment',
+    );
 
     if (search) {
       query.andWhere(

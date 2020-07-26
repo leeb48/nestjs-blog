@@ -5,6 +5,8 @@ import {
   Column,
   ManyToOne,
   OneToMany,
+  JoinTable,
+  JoinColumn,
 } from 'typeorm';
 import { User } from '../auth/user.entity';
 import { PostComment } from '../comment/comment.entity';
