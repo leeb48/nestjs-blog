@@ -17,7 +17,10 @@ const UserInfo = ({ firstName, lastName, bio }: UserInfoProps) => {
               <p className="title is-5">
                 {firstName} {lastName}
               </p>
-              <Link to="/edit-bio" className="subtitle is-6 has-text-info">
+              <Link
+                to={{ pathname: '/edit-bio', state: { bio: bio } }}
+                className="subtitle is-6 has-text-info"
+              >
                 Edit Bio
               </Link>
             </div>

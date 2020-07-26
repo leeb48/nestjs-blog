@@ -4,6 +4,7 @@ export enum AuthActionTypes {
   login = 'LOGIN USER',
   logout = 'LOGOUT USER',
   getUser = 'GET USER',
+  editBio = 'EDIT BIO',
 }
 
 // Alert Types

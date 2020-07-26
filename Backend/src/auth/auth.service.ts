@@ -12,6 +12,7 @@ import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { AccessToken } from './interfaces/accessToken.interface';
 import { User } from './user.entity';
 import { SendUserInfoDto } from './dto/send-user-info.dto';
+import { EditBioDto } from './dto/edit-bio.dto';
 
 @Injectable()
 export class AuthService {
@@ -42,6 +43,10 @@ export class AuthService {
     return {
       accessToken: this.jwtService.sign(payload),
     };
+  }
+
+  async editBio(user: User, editBioDto: EditBioDto): Promise<void> {
+    await this.userRepo.editBio(user, editBioDto);
   }
 
   getUser(user: User): SendUserInfoDto {

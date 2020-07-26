@@ -6,7 +6,12 @@ import { PostModule } from './post/post.module';
 import { CommentModule } from './comment/comment.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeOrmConfig), AuthModule, PostModule, CommentModule],
+  imports: [
+    TypeOrmModule.forRoot(typeOrmConfig),
+    AuthModule,
+    PostModule,
+    CommentModule,
+  ],
   controllers: [],
   providers: [],
 })

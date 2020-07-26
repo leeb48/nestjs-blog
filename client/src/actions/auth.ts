@@ -31,6 +31,10 @@ export interface LoginUserDto {
   password: string;
 }
 
+export interface EditBioDto {
+  bio: string;
+}
+
 export interface Token {
   accessToken: string;
 }
@@ -46,6 +50,10 @@ export interface LoginUserAction {
   payload: Token;
 }
 
+export interface EditBioAction {
+  type: AuthActionTypes.editBio;
+}
+
 export interface LogoutUserAction {
   type: AuthActionTypes.logout;
 }
@@ -55,8 +63,42 @@ export interface GetUserAction {
   payload: GetUserDto;
 }
 
+export type AuthAction =
+  | RegisterUserAction
+  | LoginUserAction
+  | LogoutUserAction
+  | GetUserAction
+  | EditBioAction;
+
 //---------------------------------------------------------------------
 // ACTION CREATORS
+
+export const editBio = (editBioDto: EditBioDto) => async (
+  dispatch: Dispatch<any>
+) => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    await axios.patch('/auth/editbio', editBioDto, config);
+
+    dispatch({ type: AuthActionTypes.editBio });
+    dispatch(setAlert({ msg: 'Bio edited', type: 'success' }));
+  } catch (error) {
+    console.log(error.message);
+
+    const errors: string[] = error.response.data.message;
+
+    if (errors) {
+      errors.forEach((error) =>
+        dispatch(setAlert({ msg: error, type: 'danger' }))
+      );
+    }
+  }
+};
 
 export const registerUser = (userData: CreateUserDto) => async (
   dispatch: Dispatch<any>
@@ -148,9 +190,3 @@ export const getUser = (showAlert: boolean = true) => async (
 
 //---------------------------------------------------------------------
 // Utility Functions
-
-export type AuthAction =
-  | RegisterUserAction
-  | LoginUserAction
-  | LogoutUserAction
-  | GetUserAction;

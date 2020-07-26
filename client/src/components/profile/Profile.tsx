@@ -7,6 +7,7 @@ import { AppState } from '../../store';
 import { User } from '../../reducers/auth';
 import UserStats from './UserStats';
 import UserInfo from './UserInfo';
+import RecentPost from './RecentPost';
 
 interface ProfileProps {
   user: User | null;
@@ -36,89 +37,8 @@ const Profile = ({ user, getUser }: ProfileProps) => {
               numberOfPosts={user.blogPostsFromUser.length}
             />
 
-            {/* TODO: RecentPost Component */}
             <div className="columns">
-              <div className="column is-6">
-                <div className="card event-card">
-                  <header className="card-header">
-                    <p className="card-header-title">My recent posts</p>
-                  </header>
-                  <div className="card-table">
-                    <div className="content">
-                      <table className="table is-fullwidth is-striped">
-                        <tbody>
-                          {/* TODO: PostListItem Component */}
-                          <tr>
-                            <td width="5%">
-                              <i className="fas fa-feather-alt"></i>
-                            </td>
-                            <td>My post</td>
-                            <td className="level-right">
-                              <a
-                                href="#"
-                                className="button is-small is-primary post-button profile-post-btn"
-                              >
-                                Edit
-                              </a>
-                              <a
-                                href="#"
-                                className="button is-small is-danger profile-post-btn"
-                              >
-                                Remove
-                              </a>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td width="5%">
-                              <i className="fas fa-feather-alt"></i>
-                            </td>
-                            <td>My post</td>
-                            <td className="level-right">
-                              <a
-                                href="#"
-                                className="button is-small is-primary post-button profile-post-btn"
-                              >
-                                Edit
-                              </a>
-                              <a
-                                href="#"
-                                className="button is-small is-danger profile-post-btn"
-                              >
-                                Remove
-                              </a>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td width="5%">
-                              <i className="fas fa-feather-alt"></i>
-                            </td>
-                            <td>My post</td>
-                            <td className="level-right">
-                              <a
-                                href="#"
-                                className="button is-small is-primary post-button profile-post-btn"
-                              >
-                                Edit
-                              </a>
-                              <a
-                                href="#"
-                                className="button is-small is-danger profile-post-btn"
-                              >
-                                Remove
-                              </a>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <footer className="card-footer">
-                    <a href="" className="card-footer-item">
-                      View All
-                    </a>
-                  </footer>
-                </div>
-              </div>
+              <RecentPost />
               <UserInfo
                 firstName={user.firstName}
                 lastName={user.lastName}

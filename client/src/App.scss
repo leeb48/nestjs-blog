@@ -9,13 +9,14 @@ $pink: #ff002b;
 $brown: #1e200f;
 $beige-light: #d0d1cd;
 $beige-lighter: #eff0eb;
+$link-color: #2a9d8f;
 
 // Update Bulma's global variables
 $family-sans-serif: 'Nunito', sans-serif;
 $grey-dark: $brown;
 $grey-light: $beige-light;
 // $primary: $purple;
-$link: $pink;
+$link: $link-color;
 $widescreen-enabled: false;
 $fullhd-enabled: false;
 

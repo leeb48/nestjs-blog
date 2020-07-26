@@ -21,6 +21,7 @@ import EditPostForm from './components/forms/EditPostForm';
 import PrivateRoute from './components/routes/PrivateRoute';
 import Landing from './components/layout/Landing';
 import EditCommentForm from './components/post/EditCommentForm';
+import EditBioForm from './components/forms/EditBioForm';
 
 const store = configureStore();
 
@@ -54,7 +55,13 @@ function App() {
             path="/editpost/:postId"
             compoment={EditPostForm}
           />
-          <PrivateRoute exact path="/editcomment" compoment={EditCommentForm} />
+          <PrivateRoute
+            exact
+            path="/edit-comment"
+            compoment={EditCommentForm}
+          />
+
+          <PrivateRoute exact path="/edit-bio" compoment={EditBioForm} />
         </Switch>
       </Router>
     </Provider>

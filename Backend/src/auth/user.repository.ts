@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { InternalServerErrorException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
+import { EditBioDto } from './dto/edit-bio.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -47,5 +48,17 @@ export class UserRepository extends Repository<User> {
     }
 
     return null;
+  }
+
+  async editBio(user: User, editBioDto: EditBioDto): Promise<void> {
+    try {
+      const { bio } = editBioDto;
+
+      user.bio = bio;
+
+      await user.save();
+    } catch (error) {
+      throw new InternalServerErrorException([error.message]);
+    }
   }
 }

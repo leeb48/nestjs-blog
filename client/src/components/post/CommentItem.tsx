@@ -21,7 +21,7 @@ const CommentItem = ({
     <div className="level comment-buttons">
       <Link
         to={{
-          pathname: `/editcomment`,
+          pathname: `/edit-comment`,
           state: {
             postId: postId,
             comment: comment,

@@ -5,6 +5,7 @@ import {
   ValidationPipe,
   Get,
   UseGuards,
+  Patch,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -14,6 +15,7 @@ import { GetUser } from '../decorators/get-user.decorator';
 import { SendUserInfoDto } from './dto/send-user-info.dto';
 import { JwtAuthGuard } from './guards/JwtAuthGuard.guard';
 import { User } from './user.entity';
+import { EditBioDto } from './dto/edit-bio.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -35,6 +37,15 @@ export class AuthController {
     @Body(ValidationPipe) authCredentialDto: AuthCredentialDto,
   ): Promise<AccessToken> {
     return await this.authService.loginUser(authCredentialDto);
+  }
+
+  @Patch('/editbio')
+  @UseGuards(JwtAuthGuard)
+  async editbio(
+    @GetUser() user: User,
+    @Body() editBioDto: EditBioDto,
+  ): Promise<void> {
+    await this.authService.editBio(user, editBioDto);
   }
 
   // @route   /auth
