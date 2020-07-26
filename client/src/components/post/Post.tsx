@@ -1,12 +1,19 @@
+// React & Redux
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getBlogPostById, removeComment } from '../../actions/blogPost';
-import { AppState } from '../../store';
-import PostContent from './PostContent';
 import { RouteComponentProps } from 'react-router-dom';
+
+// Action Creators
+import { getBlogPostById, removeComment } from '../../actions/blogPost';
+
+// State Management
+import { AppState } from '../../store';
 import { BlogPost } from '../../reducers/blogPost';
+
+// Components
 import CreateCommentForm from './CreateCommentForm';
 import CommentItem from './CommentItem';
+import PostContent from './PostContent';
 
 interface RouteInfo {
   id: string;

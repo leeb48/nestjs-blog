@@ -1,6 +1,40 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { User } from '../../reducers/auth';
 
-const RecentPost = () => {
+interface RecentPostProps {
+  user: User;
+  removeBlogPost: (postId: number) => void;
+}
+
+const RecentPost = ({ user, removeBlogPost }: RecentPostProps) => {
+  const fiveRecentPosts = user.blogPostsFromUser.slice(0, 6);
+
+  const renderRecentPosts = fiveRecentPosts.map((post) => (
+    <tr key={post.id}>
+      <td width="5%">
+        <i className="fas fa-feather-alt"></i>
+      </td>
+      <td>
+        <Link to={`/post/${post.id}`}>{post.title}</Link>
+      </td>
+      <td className="level-right">
+        <Link
+          to={`/editpost/${post.id}`}
+          className="button is-small is-warning post-button profile-post-btn"
+        >
+          Edit
+        </Link>
+        <button
+          onClick={() => removeBlogPost(post.id)}
+          className="button is-small is-danger profile-post-btn"
+        >
+          Remove
+        </button>
+      </td>
+    </tr>
+  ));
+
   return (
     <div className="column is-6">
       <div className="card event-card">
@@ -10,120 +44,7 @@ const RecentPost = () => {
         <div className="card-table">
           <div className="content">
             <table className="table is-fullwidth is-striped">
-              <tbody>
-                {/* TODO: PostListItem Component */}
-
-                <tr>
-                  <td width="5%">
-                    <i className="fas fa-feather-alt"></i>
-                  </td>
-                  <td>
-                    <a href="">My post</a>
-                  </td>
-                  <td className="level-right">
-                    <a
-                      href="#"
-                      className="button is-small is-warning post-button profile-post-btn"
-                    >
-                      Edit
-                    </a>
-                    <a
-                      href="#"
-                      className="button is-small is-danger profile-post-btn"
-                    >
-                      Remove
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td width="5%">
-                    <i className="fas fa-feather-alt"></i>
-                  </td>
-                  <td>
-                    <a href="">My post</a>
-                  </td>
-                  <td className="level-right">
-                    <a
-                      href="#"
-                      className="button is-small is-warning post-button profile-post-btn"
-                    >
-                      Edit
-                    </a>
-                    <a
-                      href="#"
-                      className="button is-small is-danger profile-post-btn"
-                    >
-                      Remove
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td width="5%">
-                    <i className="fas fa-feather-alt"></i>
-                  </td>
-                  <td>
-                    <a href="">My post</a>
-                  </td>
-                  <td className="level-right">
-                    <a
-                      href="#"
-                      className="button is-small is-warning post-button profile-post-btn"
-                    >
-                      Edit
-                    </a>
-                    <a
-                      href="#"
-                      className="button is-small is-danger profile-post-btn"
-                    >
-                      Remove
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td width="5%">
-                    <i className="fas fa-feather-alt"></i>
-                  </td>
-                  <td>
-                    <a href="">My post</a>
-                  </td>
-                  <td className="level-right">
-                    <a
-                      href="#"
-                      className="button is-small is-warning post-button profile-post-btn"
-                    >
-                      Edit
-                    </a>
-                    <a
-                      href="#"
-                      className="button is-small is-danger profile-post-btn"
-                    >
-                      Remove
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td width="5%">
-                    <i className="fas fa-feather-alt"></i>
-                  </td>
-                  <td>
-                    <a href="">My post</a>
-                  </td>
-                  <td className="level-right">
-                    <a
-                      href="#"
-                      className="button is-small is-warning post-button profile-post-btn"
-                    >
-                      Edit
-                    </a>
-                    <a
-                      href="#"
-                      className="button is-small is-danger profile-post-btn"
-                    >
-                      Remove
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
+              <tbody>{user.blogPostsFromUser && renderRecentPosts}</tbody>
             </table>
           </div>
         </div>

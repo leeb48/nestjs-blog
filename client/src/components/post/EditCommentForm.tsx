@@ -1,7 +1,12 @@
+// React & Redux
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { editComment } from '../../actions/blogPost';
 import { RouteComponentProps } from 'react-router-dom';
+
+// Action Creators
+import { editComment } from '../../actions/blogPost';
+
+// State Management
 import { PostComment } from '../../reducers/blogPost';
 import { EditPostCommentDto } from '../../actions/blogPost';
 
