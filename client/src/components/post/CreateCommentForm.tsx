@@ -22,6 +22,8 @@ const CreateCommentForm = ({
     e.preventDefault();
 
     createComment(formData, postId);
+
+    setFormData({ content: '' });
   };
 
   return (

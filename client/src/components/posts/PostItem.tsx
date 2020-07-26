@@ -54,7 +54,7 @@ const PostItem = ({ post, user, removeBlogPost }: PostItemProps) => {
               <i className="fas fa-heart"></i> 2
             </span>
             <span className="has-text-info">
-              <i className="fa fa-comments"></i> 1
+              <i className="fa fa-comments"></i> {post.postComments.length}
             </span>
           </div>
         </div>

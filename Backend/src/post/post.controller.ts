@@ -36,6 +36,13 @@ export class PostController {
     await this.postService.createPost(createPostDto, user);
   }
 
+  // @route   /blogpost/all
+  // @info    Get all the blogposts
+  @Get('/all')
+  async getAllPosts(): Promise<BlogPost[]> {
+    return await this.postService.getAllPosts();
+  }
+
   // @route /blogpost/curr-user-posts
   // @info  Get all post made by the current authenticated user
   @Get('/curr-user-posts')

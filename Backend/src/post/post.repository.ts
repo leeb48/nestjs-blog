@@ -63,6 +63,10 @@ export class PostRepository extends Repository<BlogPost> {
     return blogPost;
   }
 
+  async getAllPosts(): Promise<BlogPost[]> {
+    return await this.find();
+  }
+
   async getPostsWithQueryFilter(
     getPostFilter: GetPostFilter,
   ): Promise<BlogPost[]> {

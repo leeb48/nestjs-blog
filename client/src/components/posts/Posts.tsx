@@ -15,7 +15,11 @@ import PostsMenu from './PostsMenu';
 import PostItem from './PostItem';
 
 // Action Creators
-import { getBlogPostWithQuery, GetPostQuery } from '../../actions/blogPost';
+import {
+  getBlogPostWithQuery,
+  GetPostQuery,
+  getAllBlogPosts,
+} from '../../actions/blogPost';
 import { getUser } from '../../actions';
 import { removeBlogPost } from '../../actions/blogPost';
 
@@ -23,12 +27,14 @@ interface PostsProps extends RouteComponentProps {
   posts: BlogPost[];
   user: User | null;
   getBlogPostWithQuery: (query: GetPostQuery) => void;
+  getAllBlogPosts: () => void;
   getUser: (showAlert: boolean) => void;
   removeBlogPost: (postId: number) => void;
 }
 
 const Posts = ({
   getBlogPostWithQuery,
+  getAllBlogPosts,
   getUser,
   removeBlogPost,
   posts,
@@ -44,7 +50,8 @@ const Posts = ({
   // such as editing or removing posts
   useEffect(() => {
     getUser(false);
-  }, [getUser]);
+    getAllBlogPosts();
+  }, [getUser, getAllBlogPosts]);
 
   // Query a search to the backend only when user has finished typing
   //  the search term
@@ -72,8 +79,6 @@ const Posts = ({
     e.preventDefault();
 
     setSubmitSearch(!submitSearch);
-
-    console.log(submitSearch);
   };
 
   return (
@@ -119,6 +124,7 @@ const mapStateToProps = (state: AppState) => ({
 
 export default connect(mapStateToProps, {
   getBlogPostWithQuery,
+  getAllBlogPosts,
   getUser,
   removeBlogPost,
 })(Posts);

@@ -82,6 +82,7 @@ export type BlogPostAction =
 //---------------------------------------------------------------------
 // ACTION CREATORS
 
+// Comment Actions
 export const removeComment = (commentId: number) => async (
   dispatch: Dispatch<any>
 ) => {
@@ -175,6 +176,7 @@ export const createComment = (
   }
 };
 
+// BlogPost Actions
 export const updateBlogPost = (
   updatePostDto: UpdatePostDto,
   postId: string
@@ -222,6 +224,21 @@ export const getBlogPostById = (postId: string) => async (
   }
 };
 
+// Gets all blogposts including the comments
+export const getAllBlogPosts = () => async (dispatch: Dispatch<any>) => {
+  try {
+    // Get all blogPosts
+    const res = await axios.get('/blogpost/all');
+
+    dispatch({
+      type: BlogPostActionTypes.getAllPosts,
+      payload: res.data,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 export const getBlogPostWithQuery = (query: GetPostQuery) => async (
   dispatch: Dispatch<any>
 ) => {
@@ -241,14 +258,6 @@ export const getBlogPostWithQuery = (query: GetPostQuery) => async (
 
       return;
     }
-
-    // Get all blogPosts
-    res = await axios.get('/blogpost');
-
-    dispatch({
-      type: BlogPostActionTypes.getAllPosts,
-      payload: res.data,
-    });
   } catch (error) {
     console.log(error.message);
 

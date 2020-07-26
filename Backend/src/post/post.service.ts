@@ -21,6 +21,10 @@ export class PostService {
     return this.postRepo.getPostById(id);
   }
 
+  async getAllPosts(): Promise<BlogPost[]> {
+    return await this.postRepo.getAllPosts();
+  }
+
   async getPostsWithQueryFilter(
     getPostFilter: GetPostFilter,
   ): Promise<BlogPost[]> {
