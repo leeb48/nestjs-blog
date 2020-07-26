@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getBlogPostById } from '../../actions/blogPost';
+import { getBlogPostById, removeComment } from '../../actions/blogPost';
 import { AppState } from '../../store';
 import PostContent from './PostContent';
 import { RouteComponentProps } from 'react-router-dom';
@@ -14,10 +14,18 @@ interface RouteInfo {
 
 interface PostInterface extends RouteComponentProps<RouteInfo> {
   getBlogPostById: (postId: string) => void;
+  removeComment: (commentId: number) => void;
   post: BlogPost | null;
+  username: string | undefined;
 }
 
-const Post = ({ getBlogPostById, match, post }: PostInterface) => {
+const Post = ({
+  getBlogPostById,
+  removeComment,
+  match,
+  post,
+  username,
+}: PostInterface) => {
   useEffect(() => {
     // Get the data about the current post from the DB
     // with the postId
@@ -26,7 +34,13 @@ const Post = ({ getBlogPostById, match, post }: PostInterface) => {
   }, [getBlogPostById, match.params.id]);
 
   const renderComments = post?.postComments.map((comment) => (
-    <CommentItem key={comment.id} comment={comment} />
+    <CommentItem
+      key={comment.id}
+      comment={comment}
+      postId={post.id}
+      currUser={username}
+      removeComment={removeComment}
+    />
   ));
 
   return (
@@ -46,6 +60,9 @@ const Post = ({ getBlogPostById, match, post }: PostInterface) => {
 
 const mapStateToProps = (state: AppState) => ({
   post: state.blogPost.post,
+  username: state.auth.user?.username,
 });
 
-export default connect(mapStateToProps, { getBlogPostById })(Post);
+export default connect(mapStateToProps, { getBlogPostById, removeComment })(
+  Post
+);

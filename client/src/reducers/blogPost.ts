@@ -56,12 +56,25 @@ export const blogPost = (
       return {
         ...state,
         post: action.payload,
+        loading: false,
       };
 
     case BlogPostActionTypes.addComment:
       return {
         ...state,
         post: { ...state.post, postComments: action.payload },
+        loading: false,
+      };
+
+    case BlogPostActionTypes.removeComment:
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          postComments: state.post.postComments.filter(
+            (comment) => comment.id !== action.payload
+          ),
+        },
       };
 
     case BlogPostActionTypes.removePost:

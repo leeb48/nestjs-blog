@@ -34,6 +34,22 @@ export class CommentRepository extends Repository<PostComment> {
     }
   }
 
+  async getCommentById(commentId: number): Promise<PostComment> {
+    try {
+      const comment = await this.findOne({ id: commentId });
+
+      if (!comment) {
+        throw new NotFoundException([
+          `Comment with id ${commentId} was not found`,
+        ]);
+      }
+
+      return comment;
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
   async editComment(
     user: User,
     blogPost: BlogPost,
@@ -58,6 +74,24 @@ export class CommentRepository extends Repository<PostComment> {
       await comment.save();
 
       return blogPost.postComments;
+    } catch (error) {
+      throw new InternalServerErrorException([error.message]);
+    }
+  }
+
+  async removeComment(user: User, commentId: number): Promise<void> {
+    try {
+      const comment = await this.findOne({ id: commentId });
+
+      if (!comment) {
+        throw new NotFoundException(['Comment not found']);
+      }
+
+      if (comment.username !== user.username) {
+        throw new UnauthorizedException(['Not authorized to edit comment']);
+      }
+
+      await comment.remove();
     } catch (error) {
       throw new InternalServerErrorException([error.message]);
     }

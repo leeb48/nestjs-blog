@@ -23,4 +23,6 @@ export enum BlogPostActionTypes {
   removePost = 'REMOVE_POST',
 
   addComment = 'ADD_COMMENT',
+  editComment = 'EDIT_COMMENT',
+  removeComment = 'REMOVE_COMMENT',
 }

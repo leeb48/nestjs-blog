@@ -6,6 +6,8 @@ import {
   Body,
   UseGuards,
   Patch,
+  Get,
+  Delete,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { GetUser } from '../decorators/get-user.decorator';
@@ -31,6 +33,15 @@ export class CommentController {
     return await this.commentService.addComment(user, postId, addCommentDto);
   }
 
+  // @route   /comment/:commentId
+  // @info
+  @Get('/:commentId')
+  async getCommentById(
+    @Param('commentId', ParseIntPipe) commentId: number,
+  ): Promise<PostComment> {
+    return await this.commentService.getCommentById(commentId);
+  }
+
   // @route   /comment/:postId/:commentId
   @Patch('/:postId/:commentId')
   @UseGuards(JwtAuthGuard)
@@ -46,5 +57,14 @@ export class CommentController {
       commentId,
       editCommentDto,
     );
+  }
+
+  @Delete('/:commentId')
+  @UseGuards(JwtAuthGuard)
+  async removeComment(
+    @GetUser() user: User,
+    @Param('commentId', ParseIntPipe) commentId: number,
+  ): Promise<void> {
+    await this.commentService.removeComment(user, commentId);
   }
 }

@@ -20,6 +20,7 @@ import { getUser } from './actions';
 import EditPostForm from './components/forms/EditPostForm';
 import PrivateRoute from './components/routes/PrivateRoute';
 import Landing from './components/layout/Landing';
+import EditCommentForm from './components/post/EditCommentForm';
 
 const store = configureStore();
 
@@ -53,6 +54,7 @@ function App() {
             path="/editpost/:postId"
             compoment={EditPostForm}
           />
+          <PrivateRoute exact path="/editcomment" compoment={EditCommentForm} />
         </Switch>
       </Router>
     </Provider>

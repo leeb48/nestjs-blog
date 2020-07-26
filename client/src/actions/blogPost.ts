@@ -21,6 +21,9 @@ export interface UpdatePostDto {
 export interface CreateCommentDto {
   content: string;
 }
+export interface EditPostCommentDto {
+  content: string;
+}
 
 export interface GetPostQuery {
   search?: string;
@@ -57,16 +60,82 @@ export interface AddCommentAction {
   payload: PostComment[];
 }
 
+export interface EditCommentAction {
+  type: BlogPostActionTypes.editComment;
+}
+
+export interface RemoveCommentAciton {
+  type: BlogPostActionTypes.removeComment;
+  payload: number;
+}
+
 export type BlogPostAction =
   | UpdateBlogPostAction
   | GetAllBlogPostsAction
   | BlogPostSearchAction
   | GetBlogPostByIdAciton
   | RemoveBlogPostAction
-  | AddCommentAction;
+  | AddCommentAction
+  | EditCommentAction
+  | RemoveCommentAciton;
 
 //---------------------------------------------------------------------
 // ACTION CREATORS
+
+export const removeComment = (commentId: number) => async (
+  dispatch: Dispatch<any>
+) => {
+  try {
+    await axios.delete(`/comment/${commentId}`);
+
+    dispatch({ type: BlogPostActionTypes.removeComment, payload: commentId });
+    dispatch(setAlert({ msg: 'Comment Removed', type: 'warning' }));
+  } catch (error) {
+    console.log(error.message);
+
+    const errors: string[] = error.response.data.message;
+
+    if (errors) {
+      errors.forEach((error) =>
+        dispatch(setAlert({ msg: error, type: 'danger' }))
+      );
+    }
+  }
+};
+
+export const editComment = (
+  editCommentDto: EditPostCommentDto,
+  postId: number,
+  commentId: number
+) => async (dispatch: Dispatch<any>) => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    await axios.patch(
+      `/comment/${postId}/${commentId}`,
+      editCommentDto,
+      config
+    );
+
+    dispatch({ type: BlogPostActionTypes.editComment });
+
+    dispatch(setAlert({ msg: 'Comment Edited', type: 'success' }));
+  } catch (error) {
+    console.log(error.message);
+
+    const errors: string[] = error.response.data.message;
+
+    if (errors) {
+      errors.forEach((error) =>
+        dispatch(setAlert({ msg: error, type: 'danger' }))
+      );
+    }
+  }
+};
 
 export const createComment = (
   createCommentDto: CreateCommentDto,

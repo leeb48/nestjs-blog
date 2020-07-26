@@ -28,6 +28,10 @@ export class CommentService {
     return blogPost.postComments;
   }
 
+  async getCommentById(commentId: number): Promise<PostComment> {
+    return await this.commentRepo.getCommentById(commentId);
+  }
+
   async editComment(
     user: User,
     postId: number,
@@ -46,5 +50,9 @@ export class CommentService {
     blogPost = await this.postService.getPostById(postId);
 
     return blogPost.postComments;
+  }
+
+  async removeComment(user: User, commentId: number): Promise<void> {
+    await this.commentRepo.removeComment(user, commentId);
   }
 }
