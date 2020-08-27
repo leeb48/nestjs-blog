@@ -10,4 +10,7 @@ export const setAuthToken = (token: string) => {
 
 export const blogApi = axios.create({
   baseURL: "/api",
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  },
 });
