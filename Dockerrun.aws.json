@@ -13,7 +13,6 @@
           "POSTGRES_PASSWORD": "postgres"
         }
       ],
-      "links": ["api"],
       "memory": 123
     },
     {
