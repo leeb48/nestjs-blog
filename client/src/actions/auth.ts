@@ -1,8 +1,8 @@
-import axios from 'axios';
-import { AuthActionTypes } from './types';
-import { Dispatch } from 'react';
-import { setAlert } from './alert';
-import { BlogPost } from '../reducers/blogPost';
+import { blogApi as axios } from "../utils/axiosConfig";
+import { AuthActionTypes } from "./types";
+import { Dispatch } from "react";
+import { setAlert } from "./alert";
+import { BlogPost } from "../reducers/blogPost";
 
 //---------------------------------------------------------------------
 // INTERFACES
@@ -79,14 +79,14 @@ export const editBio = (editBioDto: EditBioDto) => async (
   try {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     };
 
-    await axios.patch('/auth/editbio', editBioDto, config);
+    await axios.patch("/auth/editbio", editBioDto, config);
 
     dispatch({ type: AuthActionTypes.editBio });
-    dispatch(setAlert({ msg: 'Bio edited', type: 'success' }));
+    dispatch(setAlert({ msg: "Bio edited", type: "success" }));
   } catch (error) {
     console.log(error.message);
 
@@ -94,7 +94,7 @@ export const editBio = (editBioDto: EditBioDto) => async (
 
     if (errors) {
       errors.forEach((error) =>
-        dispatch(setAlert({ msg: error, type: 'danger' }))
+        dispatch(setAlert({ msg: error, type: "danger" }))
       );
     }
   }
@@ -106,10 +106,10 @@ export const registerUser = (userData: CreateUserDto) => async (
   try {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     };
-    const res = await axios.post('/auth/register', userData, config);
+    const res = await axios.post("/auth/register", userData, config);
 
     dispatch({
       type: AuthActionTypes.register,
@@ -122,7 +122,7 @@ export const registerUser = (userData: CreateUserDto) => async (
 
     if (errors) {
       errors.forEach((error) =>
-        dispatch(setAlert({ msg: error, type: 'danger' }))
+        dispatch(setAlert({ msg: error, type: "danger" }))
       );
     }
   }
@@ -134,18 +134,18 @@ export const loginUser = (userData: LoginUserDto) => async (
   try {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     };
 
-    const res = await axios.post('/auth/login', userData, config);
+    const res = await axios.post("/auth/login", userData, config);
 
     dispatch({
       type: AuthActionTypes.login,
       payload: res.data,
     });
 
-    dispatch(setAlert({ msg: 'Login Successful', type: 'success' }));
+    dispatch(setAlert({ msg: "Login Successful", type: "success" }));
   } catch (error) {
     console.log(error.message);
 
@@ -153,7 +153,7 @@ export const loginUser = (userData: LoginUserDto) => async (
 
     if (errors) {
       errors.forEach((error) =>
-        dispatch(setAlert({ msg: error, type: 'danger' }))
+        dispatch(setAlert({ msg: error, type: "danger" }))
       );
     }
   }
@@ -167,7 +167,7 @@ export const getUser = (showAlert: boolean = true) => async (
   dispatch: Dispatch<any>
 ) => {
   try {
-    const res = await axios.get('/auth');
+    const res = await axios.get("/auth");
 
     dispatch({
       type: AuthActionTypes.getUser,
@@ -181,7 +181,7 @@ export const getUser = (showAlert: boolean = true) => async (
     if (showAlert) {
       if (errors) {
         errors.forEach((error) =>
-          dispatch(setAlert({ msg: error, type: 'danger' }))
+          dispatch(setAlert({ msg: error, type: "danger" }))
         );
       }
     }

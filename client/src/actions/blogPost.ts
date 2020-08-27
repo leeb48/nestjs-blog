@@ -1,8 +1,9 @@
-import axios, { AxiosResponse } from 'axios';
-import { BlogPostActionTypes } from './types';
-import { Dispatch } from 'react';
-import { setAlert } from './alert';
-import { BlogPost, PostComment } from '../reducers/blogPost';
+import { AxiosResponse } from "axios";
+import { blogApi as axios } from "../utils/axiosConfig";
+import { BlogPostActionTypes } from "./types";
+import { Dispatch } from "react";
+import { setAlert } from "./alert";
+import { BlogPost, PostComment } from "../reducers/blogPost";
 
 //---------------------------------------------------------------------
 // INTERFACES
@@ -90,7 +91,7 @@ export const removeComment = (commentId: number) => async (
     await axios.delete(`/comment/${commentId}`);
 
     dispatch({ type: BlogPostActionTypes.removeComment, payload: commentId });
-    dispatch(setAlert({ msg: 'Comment Removed', type: 'warning' }));
+    dispatch(setAlert({ msg: "Comment Removed", type: "warning" }));
   } catch (error) {
     console.log(error.message);
 
@@ -98,7 +99,7 @@ export const removeComment = (commentId: number) => async (
 
     if (errors) {
       errors.forEach((error) =>
-        dispatch(setAlert({ msg: error, type: 'danger' }))
+        dispatch(setAlert({ msg: error, type: "danger" }))
       );
     }
   }
@@ -112,7 +113,7 @@ export const editComment = (
   try {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     };
 
@@ -124,7 +125,7 @@ export const editComment = (
 
     dispatch({ type: BlogPostActionTypes.editComment });
 
-    dispatch(setAlert({ msg: 'Comment Edited', type: 'success' }));
+    dispatch(setAlert({ msg: "Comment Edited", type: "success" }));
   } catch (error) {
     console.log(error.message);
 
@@ -132,7 +133,7 @@ export const editComment = (
 
     if (errors) {
       errors.forEach((error) =>
-        dispatch(setAlert({ msg: error, type: 'danger' }))
+        dispatch(setAlert({ msg: error, type: "danger" }))
       );
     }
   }
@@ -145,7 +146,7 @@ export const createComment = (
   try {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     };
 
@@ -162,7 +163,7 @@ export const createComment = (
       payload: res.data,
     });
 
-    dispatch(setAlert({ msg: 'Comment added', type: 'success' }));
+    dispatch(setAlert({ msg: "Comment added", type: "success" }));
   } catch (error) {
     console.log(error.message);
 
@@ -170,7 +171,7 @@ export const createComment = (
 
     if (errors) {
       errors.forEach((error) =>
-        dispatch(setAlert({ msg: error, type: 'danger' }))
+        dispatch(setAlert({ msg: error, type: "danger" }))
       );
     }
   }
@@ -184,7 +185,7 @@ export const updateBlogPost = (
   try {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     };
 
@@ -194,7 +195,7 @@ export const updateBlogPost = (
       type: BlogPostActionTypes.updatePost,
     });
 
-    dispatch(setAlert({ msg: 'Post Updated', type: 'success' }));
+    dispatch(setAlert({ msg: "Post Updated", type: "success" }));
   } catch (error) {
     console.log(error.message);
 
@@ -202,7 +203,7 @@ export const updateBlogPost = (
 
     if (errors) {
       errors.forEach((error) =>
-        dispatch(setAlert({ msg: error, type: 'danger' }))
+        dispatch(setAlert({ msg: error, type: "danger" }))
       );
     }
   }
@@ -228,7 +229,7 @@ export const getBlogPostById = (postId: string) => async (
 export const getAllBlogPosts = () => async (dispatch: Dispatch<any>) => {
   try {
     // Get all blogPosts
-    const res = await axios.get('/blogpost/all');
+    const res = await axios.get("/blogpost/all");
 
     dispatch({
       type: BlogPostActionTypes.getAllPosts,
@@ -265,7 +266,7 @@ export const getBlogPostWithQuery = (query: GetPostQuery) => async (
 
     if (errors) {
       errors.forEach((error) =>
-        dispatch(setAlert({ msg: error, type: 'danger' }))
+        dispatch(setAlert({ msg: error, type: "danger" }))
       );
     }
   }
@@ -277,15 +278,15 @@ export const createPost = (newPostData: CreatePostDto, history: any) => async (
   try {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     };
 
-    await axios.post('/blogpost', newPostData, config);
+    await axios.post("/blogpost", newPostData, config);
 
-    dispatch(setAlert({ msg: 'Post Created', type: 'success' }));
+    dispatch(setAlert({ msg: "Post Created", type: "success" }));
 
-    history.push('/');
+    history.push("/");
   } catch (error) {
     console.log(error.message);
 
@@ -293,7 +294,7 @@ export const createPost = (newPostData: CreatePostDto, history: any) => async (
 
     if (errors) {
       errors.forEach((error) =>
-        dispatch(setAlert({ msg: error, type: 'danger' }))
+        dispatch(setAlert({ msg: error, type: "danger" }))
       );
     }
   }
@@ -310,7 +311,7 @@ export const removeBlogPost = (postId: number) => async (
       payload: postId,
     });
 
-    dispatch(setAlert({ msg: 'Post was removed', type: 'success' }));
+    dispatch(setAlert({ msg: "Post was removed", type: "success" }));
   } catch (error) {
     console.log(error.message);
 
@@ -318,7 +319,7 @@ export const removeBlogPost = (postId: number) => async (
 
     if (errors) {
       errors.forEach((error) =>
-        dispatch(setAlert({ msg: error, type: 'danger' }))
+        dispatch(setAlert({ msg: error, type: "danger" }))
       );
     }
   }
