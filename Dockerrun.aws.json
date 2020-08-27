@@ -1,0 +1,59 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "postgres",
+      "image": "postgres",
+      "hostname": "db",
+      "essential": false,
+      "environment": [
+        {
+          "POSTGRES_DB": "postgres",
+          "POSTGRES_USER": "postgres",
+          "POSTGRES_PASSWORD": "postgres"
+        }
+      ],
+      "links": ["api"],
+      "memory": 123
+    },
+    {
+      "name": "client",
+      "image": "bongster228/nest-blog-client",
+      "hostname": "client",
+      "essential": false,
+      "memory": 128
+    },
+    {
+      "name": "api",
+      "image": "bongster228/nest-blog-api",
+      "hostname": "api",
+      "essential": false,
+      "environment": [
+        {
+          "HOST": "db",
+          "DB_PORT": 5432,
+          "USERNAME": "postgres",
+          "PASSWORD": "postgres",
+          "DB_NAME": "postgres",
+          "SYNC": "true"
+        }
+      ],
+      "links": ["postgres"],
+      "memory": 128
+    },
+    {
+      "name": "nginx",
+      "image": "bongster228/nest-blog-nginx",
+      "hostname": "nginx",
+      "essential": true,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": ["client", "api"],
+      "memory": 128
+    }
+  ]
+}
