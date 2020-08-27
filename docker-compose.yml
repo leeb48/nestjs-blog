@@ -32,16 +32,18 @@ services:
     depends_on:
       - api
       - client
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./nginx
+    image: bongster228/nest-blog-nginx
+    # build:
+    #   dockerfile: Dockerfile.dev
+    #   context: ./nginx
     ports:
       - "80:80"
 
   api:
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./api
+    image: bongster228/nest-blog-api
+    # build:
+    #   dockerfile: Dockerfile.dev
+    #   context: ./api
     environment:
       HOST: db
       DB_PORT: 5432
@@ -57,9 +59,10 @@ services:
 
   client:
     stdin_open: true
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./client
+    image: bongster228/nest-blog-client
+    # build:
+    #   dockerfile: Dockerfile.dev
+    #   context: ./client
 
 volumes:
   db-data:

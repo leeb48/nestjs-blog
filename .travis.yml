@@ -1,0 +1,26 @@
+sudo: required
+language: generic
+
+services:
+  - docker
+
+after_success:
+  - docker build -t bongster228/nest-blog-client ./client
+  - docker build -t bongster228/nest-blog-api ./api
+  - docker build -t bongster228/nest-blog-nginx ./nginx
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push bongster228/nest-blog-client
+  - docker push bongster228/nest-blog-api
+  - docker push bongster228/nest-blog-nginx
+
+deploy:
+  provider: elasticbeanstalk
+  region: us-west-1
+  app: blog-app
+  env: BlogApp-env
+  bucket_name: elasticbeanstalk-us-west-1-278374142069
+  bucket_path: blog-app
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY

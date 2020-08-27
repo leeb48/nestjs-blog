@@ -15,7 +15,6 @@ import Alerts from "./components/alert/Alerts";
 import Posts from "./components/posts/Posts";
 import NewPostForm from "./components/forms/NewPostForm";
 import Post from "./components/post/Post";
-import { setAuthToken } from "./utils/axiosConfig";
 import { getUser } from "./actions";
 import EditPostForm from "./components/forms/EditPostForm";
 import PrivateRoute from "./components/routes/PrivateRoute";
@@ -24,9 +23,6 @@ import EditCommentForm from "./components/post/EditCommentForm";
 import EditBioForm from "./components/forms/EditBioForm";
 
 const store = configureStore();
-
-// Set auth token for axios
-setAuthToken(localStorage.token);
 
 function App() {
   useEffect(() => {
