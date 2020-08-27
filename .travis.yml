@@ -9,6 +9,6 @@ after_success:
   - docker build -t bongster228/nest-blog-api ./api
   - docker build -t bongster228/nest-blog-nginx ./nginx
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  - docker push bongster228/nest-blog-cling
+  - docker push bongster228/nest-blog-client
   - docker push bongster228/nest-blog-api
   - docker push bongster228/nest-blog-nginx
