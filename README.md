@@ -1,5 +1,7 @@
 # nestjs-blog
+
 ### Environment Variables
+
 - DB_TYPE=postgres
 - DB_PORT=5432
 - HOST=pgsqlserver
@@ -14,4 +16,5 @@
 - PORT=5000
 
 ### How To Run Project
-Use the command docker-compose up to start development mode (Currently not working)
+
+Use the command docker-compose up to start development mode

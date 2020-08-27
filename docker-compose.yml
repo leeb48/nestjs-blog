@@ -53,11 +53,10 @@ services:
       - db
     volumes:
       - /app/node_modules
-      - ./Backend:/app
-    links:
-      - "db:pgsqlserver"
+      - ./api:/app
 
   client:
+    stdin_open: true
     build:
       dockerfile: Dockerfile.dev
       context: ./client
