@@ -1,27 +1,27 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // REDUX
-import { configureStore } from './store';
-import { Provider } from 'react-redux';
-import './App.scss';
+import { configureStore } from "./store";
+import { Provider } from "react-redux";
+import "./App.scss";
 
 // COMPONENTS
-import Register from './components/forms/Register';
-import Login from './components/forms/Login';
-import Navbar from './components/layout/Navbar';
-import Profile from './components/profile/Profile';
-import Alerts from './components/alert/Alerts';
-import Posts from './components/posts/Posts';
-import NewPostForm from './components/forms/NewPostForm';
-import Post from './components/post/Post';
-import { setAuthToken } from './utils/axiosConfig';
-import { getUser } from './actions';
-import EditPostForm from './components/forms/EditPostForm';
-import PrivateRoute from './components/routes/PrivateRoute';
-import Landing from './components/layout/Landing';
-import EditCommentForm from './components/post/EditCommentForm';
-import EditBioForm from './components/forms/EditBioForm';
+import Register from "./components/forms/Register";
+import Login from "./components/forms/Login";
+import Navbar from "./components/layout/Navbar";
+import Profile from "./components/profile/Profile";
+import Alerts from "./components/alert/Alerts";
+import Posts from "./components/posts/Posts";
+import NewPostForm from "./components/forms/NewPostForm";
+import Post from "./components/post/Post";
+import { setAuthToken } from "./utils/axiosConfig";
+import { getUser } from "./actions";
+import EditPostForm from "./components/forms/EditPostForm";
+import PrivateRoute from "./components/routes/PrivateRoute";
+import Landing from "./components/layout/Landing";
+import EditCommentForm from "./components/post/EditCommentForm";
+import EditBioForm from "./components/forms/EditBioForm";
 
 const store = configureStore();
 

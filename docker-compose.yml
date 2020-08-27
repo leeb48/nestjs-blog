@@ -12,8 +12,6 @@ services:
       - db-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    networks:
-      - server_net
 
   pgadmin:
     image: dpage/pgadmin4
@@ -28,26 +26,41 @@ services:
       - pgadmin-data:/var/lib/pgadmin
     links:
       - "db:pgsqlserver"
-    networks:
-      - server_net
 
-  server:
+  nginx:
+    restart: always
+    depends_on:
+      - api
+      - client
     build:
       dockerfile: Dockerfile.dev
-      context: ./Backend
+      context: ./nginx
     ports:
-      - "5000:5000"
+      - "80:80"
+
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./api
+    environment:
+      HOST: db
+      DB_PORT: 5432
+      USERNAME: postgres
+      PASSWORD: postgres
+      DB_NAME: postgres
+      SYNC: "true"
     depends_on:
-      - "db"
-    command: ["./wait-for-it.sh", "db:5432", "--", "npm", "run", "start:dev"]
+      - db
+    volumes:
+      - /app/node_modules
+      - ./Backend:/app
     links:
       - "db:pgsqlserver"
-    networks:
-      - server_net
 
-networks:
-  server_net:
-    external: true
+  client:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./client
 
 volumes:
   db-data:
