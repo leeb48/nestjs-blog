@@ -14,4 +14,4 @@
 - PORT=5000
 
 ### How To Run Project
-Use the command docker-compose up to start development mode
+Use the command docker-compose up to start development mode (Currently not working)
